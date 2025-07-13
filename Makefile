@@ -36,15 +36,8 @@ clean:
 	rm -rf $(FRONTEND_DIR)/dist
 
 # 🧹 Bootstrap target (place it here or at the bottom — both are fine)
-bootstrap: clean
-	@echo "Ensuring yarn.lock files exist..."
-	touch $(FRONTEND_DIR)/yarn.lock
-	touch $(BACKEND_DIR)/yarn.lock
-
-	@echo "Removing node_modules and yarn.lock..."
-	rm -rf $(FRONTEND_DIR)/node_modules
-	rm -rf $(BACKEND_DIR)/node_modules
-
-	@echo "Installing dependencies..."
-	cd $(FRONTEND_DIR) && yarn install
-	cd $(BACKEND_DIR) && yarn install
+bootstrap:
+	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/yarn.lock $(FRONTEND_DIR)/.yarn $(FRONTEND_DIR)/dist \
+	       $(BACKEND_DIR)/node_modules $(BACKEND_DIR)/yarn.lock $(BACKEND_DIR)/.yarn && \
+	cd $(FRONTEND_DIR) && yarn install --no-cache && \
+	cd ../$(BACKEND_DIR) && yarn install --no-cache
