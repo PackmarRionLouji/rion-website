@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.ts",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "vue": "^3.5.17"
