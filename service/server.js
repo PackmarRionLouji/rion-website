@@ -14,7 +14,7 @@ fastify.get('/api/hello', async (request, reply) => {
 })
 
 // Start server
-fastify.listen({ port: 1000 }, (err, address) => {
+fastify.listen({ port: 5201 }, (err, address) => {
   if (err) {
     fastify.log.error(err)
     process.exit(1)
