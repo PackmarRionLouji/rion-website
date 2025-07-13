@@ -27,3 +27,11 @@ package-lock.json
 
 # Optional: VS Code settings
 .vscode/
+
+# Cache files
+.vite/
+**/.vite/
+.cache/
+**/.cache/
+.eslintcache
+**/.eslintcache
