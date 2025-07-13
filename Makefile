@@ -37,7 +37,9 @@ clean:
 
 # 🧹 Bootstrap target (place it here or at the bottom — both are fine)
 bootstrap:
-	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/yarn.lock $(FRONTEND_DIR)/.yarn $(FRONTEND_DIR)/dist \
-	       $(BACKEND_DIR)/node_modules $(BACKEND_DIR)/yarn.lock $(BACKEND_DIR)/.yarn && \
-	cd $(FRONTEND_DIR) && yarn install --no-cache && \
-	cd ../$(BACKEND_DIR) && yarn install --no-cache
+	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/yarn.lock $(FRONTEND_DIR)/.yarn $(FRONTEND_DIR)/dist
+	rm -rf $(BACKEND_DIR)/node_modules $(BACKEND_DIR)/yarn.lock $(BACKEND_DIR)/.yarn
+	cd $(FRONTEND_DIR) && yarn install
+	rm -rf $(FRONTEND_DIR)/.yarn/cache
+	cd $(BACKEND_DIR) && yarn install
+	rm -rf $(BACKEND_DIR)/.yarn/cache
