@@ -1,0 +1,30 @@
+{
+  "rules": {
+      "import/prefer-default-export": 0,
+      "vue/attribute-hyphenation": 0,
+      "vue/multi-word-component-names": 0,
+      "vue/max-attributes-per-line": 0,
+      "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+    },
+  "env": {
+      "node": true
+  },
+  "parserOptions": {
+      "ecmaVersion": "latest"
+  },
+  "extends": [
+      "airbnb-base",
+      "plugin:vue/vue3-recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.vue"],
+      "rules": {
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+        "vue/no-mutating-props": 0
+      }
+    }
+  ]
+}
+
