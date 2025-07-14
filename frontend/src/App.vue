@@ -1,47 +1,52 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+    <img
+      alt="Profile logo"
+      class="profile-logo"
+      src="./assets/rion-louji.svg"
+      style="height: 200px; width: 165px;"
+    />
+    <nav>
+      <Name msg="Packmar Rion Louji" />
+      <!-- <RouterLink to="/">Home</RouterLink> |
+      <RouterLink to="/about">About</RouterLink> -->
+    </nav>
   </header>
 
   <main>
-    <TheWelcome />
+    <RouterView />
   </main>
 </template>
+
+<script setup>
+import { RouterLink, RouterView } from 'vue-router';
+import Name from './components/Name.vue';
+</script>
 
 <style scoped>
 header {
   line-height: 1.5;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  height: 80px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+nav {
+  font-size: 1.2rem;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+main {
+  padding: 2rem;
+}
+</style>
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style scoped>
+.profile-logo {
+  margin-left: -100px;
 }
 </style>

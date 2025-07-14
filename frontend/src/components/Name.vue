@@ -1,22 +1,25 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-})
-</script>
-
 <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+      Software Engineer
     </h3>
   </div>
 </template>
+
+<script>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Name',
+  props: {
+    msg: {
+      type: String,
+      required: true
+    }
+  }
+})
+</script>
 
 <style scoped>
 h1 {
