@@ -26,19 +26,28 @@
 
 i {
   display: flex;
-  place-items: center;
-  place-content: center;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
-
   color: var(--color-text);
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+i:hover {
+  background: var(--color-text);
+  color: var(--color-background);
+  transform: scale(1.1);
 }
 
 h3 {
   font-size: 1.2rem;
   font-weight: 500;
   margin-bottom: 0.4rem;
-  color: var(--color-heading);
+  padding-top: 1rem;
+  color: var(--color-text);
 }
 
 @media (min-width: 1024px) {
@@ -56,6 +65,14 @@ h3 {
     border-radius: 8px;
     width: 50px;
     height: 50px;
+    transition: all 0.3s ease;
+  }
+
+  i:hover {
+    background: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
+    transform: scale(1.1);
   }
 
   .item:before {

@@ -17,39 +17,46 @@
   <main>
     <RouterView />
   </main>
+  <CustomCursor />
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import Name from './components/Name.vue';
 import ColorPicker from './components/ColorPicker.vue';
+import CustomCursor from './components/CustomCursor.vue';
 </script>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
+  header {
+    line-height: 1.5;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
 
-.logo {
-  height: 80px;
-}
+  .logo {
+    height: 80px;
+  }
 
-nav {
-  font-size: 1.2rem;
-}
+  nav {
+    font-size: 1.2rem;
+  }
 
-main {
-  padding: 2rem;
-}
-</style>
+  main {
+    padding: 2rem;
+  }
 
-<style scoped>
-.profile-logo {
-  margin-left: -100px;
-}
+  .profile-logo {
+    margin-left: -400px;
+    outline: none;
+    box-shadow: none;
+    border: 0;
+  }
+
+  nav {
+    margin-left: -400px;
+  }
 </style>
