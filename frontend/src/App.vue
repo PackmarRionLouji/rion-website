@@ -11,6 +11,7 @@
       <!-- <RouterLink to="/">Home</RouterLink> |
       <RouterLink to="/about">About</RouterLink> -->
     </nav>
+    <ColorPicker />
   </header>
 
   <main>
@@ -21,6 +22,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import Name from './components/Name.vue';
+import ColorPicker from './components/ColorPicker.vue';
 </script>
 
 <style scoped>
@@ -30,6 +32,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .logo {
