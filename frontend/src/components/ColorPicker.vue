@@ -7,6 +7,7 @@
         :key="color.name"
         @click="setColor(color)"
         class="color-option"
+        :class="{ 'is-active': activeColor === color.name }"
         :style="{ backgroundColor: color.value }"
       ></div>
     </div>
@@ -17,6 +18,7 @@
   import { ref, onMounted } from 'vue'
 
   const showPicker = ref(false)
+  const activeColor = ref(localStorage.getItem('colorName') || 'dark')
   const colors = [
     { name: 'light', value: '#ffffff', text: '#2c3e50', isDark: false },
     { name: 'dark', value: '#181818', text: '#ffffff', isDark: true },
@@ -47,7 +49,57 @@
     document.documentElement.style.setProperty('--color-border-hover', `rgba(${rgbStr}, 0.2)`)
   }
 
+  const setOrbColors = (colorName) => {
+    let orb1, orb2, orb3;
+    
+    switch (colorName) {
+      case 'dark':
+      case 'light':
+      case 'gray':
+        // For neutral backgrounds, use a subtle elegant mix
+        orb1 = '#4facfe'; // soft blue
+        orb2 = '#00f2fe'; // cyan
+        orb3 = '#a18cd1'; // soft purple
+        break;
+      case 'blue':
+        orb1 = '#1565c0';
+        orb2 = '#42a5f5';
+        orb3 = '#00796b'; // teal accent
+        break;
+      case 'green':
+        orb1 = '#2e7d32';
+        orb2 = '#81c784';
+        orb3 = '#0277bd'; // blue accent
+        break;
+      case 'purple':
+        orb1 = '#7b1fa2';
+        orb2 = '#ba68c8';
+        orb3 = '#c2185b'; // pink accent
+        break;
+      case 'orange':
+        orb1 = '#ef6c00';
+        orb2 = '#ffb74d';
+        orb3 = '#d32f2f'; // red accent
+        break;
+      case 'pink':
+        orb1 = '#c2185b';
+        orb2 = '#f06292';
+        orb3 = '#7b1fa2'; // purple accent
+        break;
+      default:
+        orb1 = 'var(--color-text)';
+        orb2 = 'var(--color-text)';
+        orb3 = 'var(--color-text)';
+    }
+
+    document.documentElement.style.setProperty('--orb-1-color', orb1);
+    document.documentElement.style.setProperty('--orb-2-color', orb2);
+    document.documentElement.style.setProperty('--orb-3-color', orb3);
+  }
+
   const setColor = (color) => {
+    activeColor.value = color.name
+    
     document.documentElement.style.setProperty('--color-background', color.value || 'var(--vt-c-white)')
     if (color.text) {
       document.documentElement.style.setProperty('--color-text', color.text)
@@ -55,11 +107,13 @@
     }
 
     setContrastVariables(color.isDark, color.value)
+    setOrbColors(color.name)
     
     const pickerBg = (color.value === '#181818' || color.name === 'dark') ? '#ffffff' : 'var(--color-background)'
     document.documentElement.style.setProperty('--picker-bg', pickerBg)
     
     localStorage.setItem('bgColor', color.value)
+    localStorage.setItem('colorName', color.name)
     localStorage.setItem('textColor', color.text || '')
     localStorage.setItem('isDark', color.isDark)
     showPicker.value = false
@@ -69,10 +123,16 @@
     const savedColor = localStorage.getItem('bgColor')
     const savedText = localStorage.getItem('textColor')
     const isDark = localStorage.getItem('isDark') === 'true'
+    const colorName = localStorage.getItem('colorName') || 'dark'
+    
     if (savedColor) {
       document.documentElement.style.setProperty('--color-background', savedColor)
       setContrastVariables(isDark, savedColor)
+      setOrbColors(colorName)
+    } else {
+      setOrbColors('dark') // default
     }
+    
     if (savedText) {
       document.documentElement.style.setProperty('--color-text', savedText)
       document.documentElement.style.setProperty('--color-heading', savedText)
@@ -117,5 +177,15 @@
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid var(--color-border);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .color-option:hover {
+    transform: scale(1.1);
+  }
+
+  .color-option.is-active {
+    border: 3px solid var(--color-text); /* Matches text theme (white on dark, black on light) */
+    transform: scale(1.15);
   }
 </style>
