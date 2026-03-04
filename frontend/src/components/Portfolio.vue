@@ -12,13 +12,13 @@ import IconExtraCurricular from './icons/IconExtraCurricular.vue'
 const showList = ref(false)
 
 const items = [
-  { id: 1, component: IconAbout, heading: 'About me and Interests' },
-  { id: 2, component: IconEducation, heading: 'Education' },
-  { id: 3, component: IconExperience, heading: 'Experience' },
-  { id: 4, component: IconSkills, heading: 'Skills' },
-  { id: 5, component: IconProjects, heading: 'Projects' },
-  { id: 6, component: IconExtraCurricular, heading: 'Extra Curricular' },
-  { id: 7, component: IconContact, heading: 'Contact me' },
+  { id: 1, component: IconAbout, heading: 'My Story & Passions' },
+  { id: 2, component: IconEducation, heading: 'Academic Background' },
+  { id: 3, component: IconExperience, heading: 'Professional Journey' },
+  { id: 4, component: IconSkills, heading: 'Technical Expertise' },
+  { id: 5, component: IconProjects, heading: 'Featured Work' },
+  { id: 6, component: IconExtraCurricular, heading: 'Beyond the Code' },
+  { id: 7, component: IconContact, heading: "Let's Connect" },
 ]
 
 onMounted(() => {
