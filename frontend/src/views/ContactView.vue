@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import IconEmail from '../components/icons/IconEmail.vue'
 import IconGitHub from '../components/icons/IconGitHub.vue'
 import IconLinkedIn from '../components/icons/IconLinkedIn.vue'
@@ -13,15 +14,14 @@ const contacts = [
 
 const copyFeedback = ref('')
 
-const handleContactClick = (contact, e) => {
-  if (contact.canCopy && !e.metaKey && !e.ctrlKey) {
-    e.preventDefault()
-    navigator.clipboard.writeText(contact.value)
-    copyFeedback.value = 'Email copied!'
-    setTimeout(() => {
-      copyFeedback.value = ''
-    }, 2000)
-  }
+const copyToClipboard = (text, e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  navigator.clipboard.writeText(text)
+  copyFeedback.value = 'Email copied!'
+  setTimeout(() => {
+    copyFeedback.value = ''
+  }, 2000)
 }
 </script>
 
@@ -40,7 +40,6 @@ const handleContactClick = (contact, e) => {
         target="_blank" 
         rel="noopener noreferrer"
         class="contact-card border-card"
-        @click="handleContactClick(contact, $event)"
       >
         <div class="icon-wrapper">
           <component :is="contact.icon" class="contact-icon" />
@@ -48,7 +47,14 @@ const handleContactClick = (contact, e) => {
         <div class="contact-details">
           <div class="title-row">
             <h3>{{ contact.name }}</h3>
-            <span v-if="contact.canCopy" class="copy-hint">(Click to copy)</span>
+            <button 
+              v-if="contact.canCopy" 
+              class="copy-btn-only" 
+              @click="copyToClipboard(contact.value, $event)"
+              title="Copy to clipboard"
+            >
+              📋
+            </button>
           </div>
           <span>{{ contact.value }}</span>
         </div>
@@ -135,14 +141,6 @@ h2 {
 .contact-details {
   display: flex;
   flex-direction: column;
-  flex: 1;
-}
-
-.title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .contact-details h3 {
@@ -153,45 +151,32 @@ h2 {
   line-height: 1.2;
 }
 
-.copy-hint {
-  font-size: 0.75rem;
-  opacity: 0.5;
-  font-weight: 400;
-  background: var(--color-card-bg);
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: opacity 0.3s ease;
+.copy-btn-only {
+  font-size: 1rem;
+  background: var(--color-icon-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  padding: 0;
+  line-height: 1;
 }
 
-.contact-card:hover .copy-hint {
-  opacity: 0.8;
+.copy-btn-only:hover {
+  background: var(--color-card-hover);
+  border-color: var(--color-heading);
+  transform: scale(1.1);
 }
 
 .contact-details span {
   font-size: 0.95rem;
   opacity: 0.7;
   margin-top: 0.2rem;
-}
-
-.copy-toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-text);
-  color: var(--color-background);
-  padding: 0.6rem 1.2rem;
-  border-radius: 100px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  z-index: 2000;
-  animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-
-@keyframes toastIn {
-  from { opacity: 0; transform: translate(-50%, 1rem); }
-  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 .back-btn {
