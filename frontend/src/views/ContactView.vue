@@ -19,48 +19,21 @@ const otherPlaces = [
   { name: 'Instagram', url: 'https://www.instagram.com/rion_louji?igsh=OWJvbGR4Z2FmdGZw', icon: IconInstagram },
 ]
 
+const copyFeedback = ref('')
 const form = ref({
   name: '',
   email: '',
   message: ''
 })
 
-const isSubmitting = ref(false)
-const submitSuccess = ref(false)
-const submitError = ref(false)
-
-const handleFormSubmit = async () => {
-  isSubmitting.value = true
-  submitError.value = false
-  
-  try {
-    const response = await fetch('https://formspree.io/f/sjrion01@gmail.com', { // Formspree will handle forwarding to this email
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: form.value.name,
-        email: form.value.email,
-        message: form.value.message
-      })
-    })
-
-    if (response.ok) {
-      submitSuccess.value = true
-      form.value = { name: '', email: '', message: '' }
-      setTimeout(() => {
-        submitSuccess.value = false
-      }, 5000)
-    } else {
-      submitError.value = true
-    }
-  } catch (error) {
-    submitError.value = true
-  } finally {
-    isSubmitting.value = false
-  }
+const copyToClipboard = (text, e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  navigator.clipboard.writeText(text)
+  copyFeedback.value = 'Email copied!'
+  setTimeout(() => {
+    copyFeedback.value = ''
+  }, 2000)
 }
 </script>
 
@@ -111,56 +84,6 @@ const handleFormSubmit = async () => {
       </a>
     </div>
 
-    <!-- Contact Form Section -->
-    <div class="form-section">
-      <div class="section-title">
-        <h4>Send a Message</h4>
-        <div class="divider"></div>
-      </div>
-      
-      <form v-if="!submitSuccess" @submit.prevent="handleFormSubmit" class="contact-form">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" v-model="form.name" required placeholder="John Doe" />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" v-model="form.email" required placeholder="john@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <div class="textarea-wrapper">
-            <textarea 
-              id="message" 
-              name="message"
-              v-model="form.message" 
-              required 
-              placeholder="Your message here..." 
-              rows="5"
-              maxlength="1000"
-            ></textarea>
-            <div class="char-count" :class="{ 'near-limit': form.message.length > 900 }">
-              {{ form.message.length }}/1000
-            </div>
-          </div>
-        </div>
-        <div v-if="submitError" class="error-notification">
-          Something went wrong. Please try again or use direct email.
-        </div>
-        <button type="submit" class="submit-btn" :disabled="isSubmitting">
-          <span v-if="!isSubmitting">Send Message 🚀</span>
-          <span v-else class="loader"></span>
-        </button>
-      </form>
-
-      <div v-else class="success-message">
-        <div class="check-icon">✓</div>
-        <h3>Message Sent!</h3>
-        <p>Thanks for reaching out. I'll get back to you soon.</p>
-        <button @click="submitSuccess = false" class="reset-btn">Send another message</button>
-      </div>
-    </div>
-
     <!-- Resume Section -->
     <div class="resume-section">
       <a href="/Resume_PackmarRionLouji.pdf" download class="resume-btn">
@@ -178,6 +101,44 @@ const handleFormSubmit = async () => {
           {{ place.name }}
         </a>
       </div>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="form-section">
+      <div class="section-title">
+        <h4>Send a Message</h4>
+        <div class="divider"></div>
+      </div>
+      
+      <form class="contact-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" v-model="form.name" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" v-model="form.email" required placeholder="john@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <div class="textarea-wrapper">
+            <textarea 
+              id="message" 
+              v-model="form.message" 
+              required 
+              placeholder="What's on your mind?..." 
+              rows="5"
+              maxlength="1000"
+            ></textarea>
+            <div class="char-count">
+              {{ form.message.length }}/1000
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn" disabled title="Registration coming soon">
+          Send Message 🚀
+        </button>
+      </form>
     </div>
 
     <button class="back-btn" @click="$router.push('/')">← Back Home</button>
@@ -375,185 +336,6 @@ h2 {
   opacity: 0.7;
 }
 
-.form-section {
-  margin-bottom: 4rem;
-  padding: 2.5rem;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.section-title {
-  margin-bottom: 2rem;
-}
-
-.section-title h4 {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.5;
-  margin-bottom: 0.5rem;
-}
-
-.section-title .divider {
-  width: 40px;
-  height: 3px;
-  background: var(--color-heading);
-  border-radius: 10px;
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--color-heading);
-  opacity: 0.8;
-}
-
-.form-group input,
-.form-group textarea {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1rem;
-  color: var(--color-text);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.form-group textarea {
-  width: 100%;
-}
-
-.textarea-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.char-count {
-  position: absolute;
-  bottom: 0.8rem;
-  right: 1rem;
-  font-size: 0.75rem;
-  opacity: 0.5;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-.error-notification {
-  color: #ef4444;
-  font-size: 0.9rem;
-  padding: 0.8rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: 8px;
-  text-align: center;
-}
-
-.submit-btn {
-  background: var(--color-heading);
-  color: var(--color-background);
-  border: none;
-  border-radius: 12px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  filter: brightness(1.1);
-}
-
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.loader {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top-color: var(--color-background);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.success-message {
-  text-align: center;
-  padding: 1rem 0;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.check-icon {
-  width: 60px;
-  height: 60px;
-  background: #10b981;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  margin: 0 auto 1.5rem;
-}
-
-.success-message h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-heading);
-}
-
-.success-message p {
-  opacity: 0.7;
-  margin-bottom: 2rem;
-}
-
-.reset-btn {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.reset-btn:hover {
-  background: var(--color-card-hover);
-  border-color: var(--color-heading);
-}
-
 .resume-section {
   margin-bottom: 4rem;
 }
@@ -625,6 +407,101 @@ h2 {
   width: 18px;
   height: 18px;
   opacity: 0.8;
+}
+
+.form-section {
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0.8;
+}
+
+.section-title {
+  margin-bottom: 2rem;
+}
+
+.section-title h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+.section-title .divider {
+  width: 40px;
+  height: 3px;
+  background: var(--color-heading);
+  border-radius: 10px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  opacity: 0.8;
+}
+
+.form-group input,
+.form-group textarea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--color-text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group textarea {
+  width: 100%;
+}
+
+.textarea-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.char-count {
+  position: absolute;
+  bottom: 0.8rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.submit-btn {
+  background: var(--color-heading);
+  color: var(--color-background);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: not-allowed;
+  opacity: 0.5;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .back-btn {
