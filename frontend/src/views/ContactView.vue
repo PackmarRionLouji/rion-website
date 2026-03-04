@@ -9,8 +9,6 @@ import IconCopy from '../components/icons/IconCopy.vue'
 const contacts = [
   { name: 'Email', value: 'sjrion01@gmail.com', url: 'mailto:sjrion01@gmail.com', icon: IconEmail, canCopy: true },
   { name: 'LinkedIn', value: 'packmarrionlouji', url: 'https://www.linkedin.com/in/packmarrionlouji/', icon: IconLinkedIn },
-  { name: 'GitHub', value: 'PackmarRionLouji', url: 'https://github.com/PackmarRionLouji', icon: IconGitHub },
-  { name: 'Medium', value: 'Medium Profile', url: 'https://medium.com/', icon: IconMedium },
 ]
 
 const copyFeedback = ref('')
