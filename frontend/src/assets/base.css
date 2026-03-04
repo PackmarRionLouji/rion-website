@@ -1,24 +1,24 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* color palette */
 :root {
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --vt-c-white-soft: #fafafa;
+  --vt-c-white-mute: #f3f4f6;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --vt-c-black: #0a0a0a;
+  --vt-c-black-soft: #121212;
+  --vt-c-black-mute: #1a1a1a;
 
   --vt-c-indigo: #2c3e50;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.15);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.08);
+  --vt-c-divider-dark-1: rgba(255, 255, 255, 0.15);
+  --vt-c-divider-dark-2: rgba(255, 255, 255, 0.08);
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --vt-c-text-light-1: #1f2937;
+  --vt-c-text-light-2: rgba(31, 41, 55, 0.66);
+  --vt-c-text-dark-1: rgba(255, 255, 255, 0.95);
+  --vt-c-text-dark-2: rgba(255, 255, 255, 0.65);
 }
 
 /* semantic color variables for this project */
@@ -32,6 +32,11 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+
+  /* New card specific variables */
+  --color-card-bg: rgba(0, 0, 0, 0.03);
+  --color-card-hover: rgba(0, 0, 0, 0.06);
+  --color-icon-bg: rgba(0, 0, 0, 0.05);
 
   --section-gap: 160px;
 }
@@ -47,6 +52,10 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --color-card-bg: rgba(255, 255, 255, 0.05);
+    --color-card-hover: rgba(255, 255, 255, 0.1);
+    --color-icon-bg: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -60,6 +69,10 @@
 
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+
+  --color-card-bg: rgba(255, 255, 255, 0.05);
+  --color-card-hover: rgba(255, 255, 255, 0.1);
+  --color-icon-bg: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="light"] {
@@ -83,28 +96,13 @@
   cursor: none !important;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  background: #f39c12;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease;
-}
-
 body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
   transition:
-    color 0.5s,
-    background-color 0.5s;
+    color 0.5s ease-in-out,
+    background-color 0.5s ease-in-out;
   line-height: 1.6;
   font-family:
     Inter,
@@ -115,12 +113,41 @@ body {
     Oxygen,
     Ubuntu,
     Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
     sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+
+/* Stagger List Transitions */
+.stagger-enter-active,
+.stagger-leave-active {
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stagger-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
 }

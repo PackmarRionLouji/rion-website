@@ -14,91 +14,60 @@
 
 <style scoped>
 .item {
-  margin-top: 2rem;
   display: flex;
   position: relative;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: var(--color-card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+}
+
+.item:hover {
+  transform: translateY(-2px) scale(1.005);
+  box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -5px rgba(0, 0, 0, 0.02);
+  background: var(--color-card-hover);
+  border-color: var(--color-border-hover);
 }
 
 .details {
   flex: 1;
-  margin-left: 1rem;
+  margin-left: 1.5rem;
 }
 
 i {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   color: var(--color-text);
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  background: rgba(128, 128, 128, 0.1);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 12px;
+  background: var(--color-icon-bg);
 }
 
-i:hover {
+.item:hover i {
   background: var(--color-text);
   color: var(--color-background);
-  transform: scale(1.1);
+  transform: scale(1.05) rotate(-3deg);
 }
 
 h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  padding-top: 1rem;
-  color: var(--color-text);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: var(--color-heading);
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 1024px) {
   .item {
-    margin-top: 0;
-    padding: 0.4rem 0 1rem calc(var(--section-gap) / 2);
-  }
-
-  i {
-    top: calc(50% - 25px);
-    left: -26px;
-    position: absolute;
-    border: 1px solid var(--color-border);
-    background: var(--color-background);
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
-    transition: all 0.3s ease;
-  }
-
-  i:hover {
-    background: var(--color-text);
-    color: var(--color-background);
-    border-color: var(--color-text);
-    transform: scale(1.1);
-  }
-
-  .item:before {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    bottom: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:after {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    top: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:first-of-type:before {
-    display: none;
-  }
-
-  .item:last-of-type:after {
-    display: none;
+    align-items: center;
   }
 }
 </style>
+
