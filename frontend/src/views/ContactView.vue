@@ -37,7 +37,7 @@ const copyToClipboard = (text, e) => {
     <div class="header-section">
       <div class="availability-tag academic">
         <span class="pulse-dot academic"></span>
-        Preparing for MS • Researching Systems & AI
+        MS Admitted • Preparing for Visa
       </div>
       <h2>Let's Talk Tech</h2>
       <p class="subtitle">
