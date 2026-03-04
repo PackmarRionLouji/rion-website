@@ -39,6 +39,10 @@ const copyToClipboard = (text, e) => {
 
 <template>
   <div class="view-content animate-slide-up">
+    <!-- Background Decor -->
+    <div class="aurora-glow glow-1"></div>
+    <div class="aurora-glow glow-2"></div>
+
     <div class="nav-header">
       <button class="back-btn-premium" @click="$router.push('/')">
         <span class="btn-content">
@@ -168,58 +172,99 @@ const copyToClipboard = (text, e) => {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.7rem 1.2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--color-border);
+  padding: 0.75rem 1.4rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 100px;
   color: var(--color-heading);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  letter-spacing: 0.02em;
 }
 
 .back-btn-premium .btn-content {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  z-index: 1;
+  gap: 0.8rem;
+  z-index: 2;
 }
 
 .back-btn-premium .arrow {
-  font-size: 1.1rem;
-  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .back-btn-premium:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--color-heading);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(var(--color-heading-rgb), 0.5);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 15px 30px -10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(var(--color-heading-rgb), 0.1);
 }
 
 .back-btn-premium:hover .arrow {
-  transform: translateX(-4px);
+  transform: translateX(-6px);
 }
 
 .back-btn-premium .btn-glow {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 140%;
-  height: 300%;
-  background: radial-gradient(circle, rgba(var(--color-heading-rgb), 0.1) 0%, transparent 70%);
+  width: 150%;
+  height: 400%;
+  background: radial-gradient(circle, rgba(var(--color-heading-rgb), 0.2) 0%, transparent 60%);
   transform: translate(-50%, -50%) rotate(45deg) translateY(100%);
-  transition: transform 0.6s ease;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   pointer-events: none;
+  z-index: 1;
 }
 
 .back-btn-premium:hover .btn-glow {
   transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+}
+
+/* Background Aurora Effects */
+.view-content {
+  position: relative;
+}
+
+.aurora-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+.glow-1 {
+  top: -100px;
+  right: -100px;
+  background: var(--color-heading);
+}
+
+.glow-2 {
+  bottom: 100px;
+  left: -200px;
+  background: #3b82f6;
+  opacity: 0.1;
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 60px) scale(1.1); }
+  100% { transform: translate(-20px, -30px) scale(1.2); }
 }
 
 .header-section {
