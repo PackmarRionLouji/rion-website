@@ -39,9 +39,16 @@ const copyToClipboard = (text, e) => {
 
 <template>
   <div class="view-content animate-slide-up">
-    <button class="back-link" @click="$router.push('/')">
-      <span class="arrow">←</span> Back Home
-    </button>
+    <div class="nav-header">
+      <button class="back-btn-premium" @click="$router.push('/')">
+        <span class="btn-content">
+          <span class="arrow">←</span>
+          <span>Back to Portfolio</span>
+        </span>
+        <div class="btn-glow"></div>
+      </button>
+    </div>
+
     <div class="header-section">
       <div class="availability-tag academic">
         <span class="pulse-dot academic"></span>
@@ -153,35 +160,74 @@ const copyToClipboard = (text, e) => {
   max-width: 800px;
 }
 
-.header-section {
-  margin-bottom: 3rem;
-  margin-top: 1rem;
+.nav-header {
+  margin-bottom: 2rem;
 }
 
-.back-link {
+.back-btn-premium {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  background: transparent;
-  border: none;
+  padding: 0.7rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
   color: var(--color-heading);
-  font-size: 1rem;
+  text-decoration: none;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0.6;
-  margin-bottom: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.back-link:hover {
-  opacity: 1;
+.back-btn-premium .btn-content {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 1;
+}
+
+.back-btn-premium .arrow {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.back-btn-premium:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-heading);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.back-btn-premium:hover .arrow {
   transform: translateX(-4px);
 }
 
-.back-link .arrow {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
+.back-btn-premium .btn-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(var(--color-heading-rgb), 0.1) 0%, transparent 70%);
+  transform: translate(-50%, -50%) rotate(45deg) translateY(100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.back-btn-premium:hover .btn-glow {
+  transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+}
+
+.header-section {
+  margin-bottom: 3.5rem;
+}
+
+.back-link {
+  display: none;
 }
 
 .availability-tag {
