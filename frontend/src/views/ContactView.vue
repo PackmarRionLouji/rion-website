@@ -4,6 +4,7 @@ import IconEmail from '../components/icons/IconEmail.vue'
 import IconGitHub from '../components/icons/IconGitHub.vue'
 import IconLinkedIn from '../components/icons/IconLinkedIn.vue'
 import IconMedium from '../components/icons/IconMedium.vue'
+import IconCopy from '../components/icons/IconCopy.vue'
 
 const contacts = [
   { name: 'Email', value: 'sjrion01@gmail.com', url: 'mailto:sjrion01@gmail.com', icon: IconEmail, canCopy: true },
@@ -47,16 +48,18 @@ const copyToClipboard = (text, e) => {
         <div class="contact-details">
           <div class="title-row">
             <h3>{{ contact.name }}</h3>
+          </div>
+          <div class="value-row">
+            <span>{{ contact.value }}</span>
             <button 
               v-if="contact.canCopy" 
-              class="copy-btn-only" 
+              class="copy-btn-inline" 
               @click="copyToClipboard(contact.value, $event)"
               title="Copy to clipboard"
             >
-              📋
+              <IconCopy />
             </button>
           </div>
-          <span>{{ contact.value }}</span>
         </div>
       </a>
     </div>
@@ -151,32 +154,44 @@ h2 {
   line-height: 1.2;
 }
 
-.copy-btn-only {
-  font-size: 1rem;
-  background: var(--color-icon-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
+.value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.copy-btn-inline {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--color-icon-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-heading);
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   padding: 0;
-  line-height: 1;
+  opacity: 0.6;
 }
 
-.copy-btn-only:hover {
+.copy-btn-inline:hover {
   background: var(--color-card-hover);
   border-color: var(--color-heading);
   transform: scale(1.1);
+  opacity: 1;
+}
+
+.copy-btn-inline svg {
+  width: 14px;
+  height: 14px;
 }
 
 .contact-details span {
   font-size: 0.95rem;
   opacity: 0.7;
-  margin-top: 0.2rem;
 }
 
 .back-btn {
