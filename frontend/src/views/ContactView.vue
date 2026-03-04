@@ -27,18 +27,40 @@ const form = ref({
 
 const isSubmitting = ref(false)
 const submitSuccess = ref(false)
+const submitError = ref(false)
 
-const handleFormSubmit = () => {
+const handleFormSubmit = async () => {
   isSubmitting.value = true
-  // Simulate API call
-  setTimeout(() => {
+  submitError.value = false
+  
+  try {
+    const response = await fetch('https://formspree.io/f/sjrion01@gmail.com', { // Formspree will handle forwarding to this email
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: form.value.name,
+        email: form.value.email,
+        message: form.value.message
+      })
+    })
+
+    if (response.ok) {
+      submitSuccess.value = true
+      form.value = { name: '', email: '', message: '' }
+      setTimeout(() => {
+        submitSuccess.value = false
+      }, 5000)
+    } else {
+      submitError.value = true
+    }
+  } catch (error) {
+    submitError.value = true
+  } finally {
     isSubmitting.value = false
-    submitSuccess.value = true
-    form.value = { name: '', email: '', message: '' }
-    setTimeout(() => {
-      submitSuccess.value = false
-    }, 5000)
-  }, 1500)
+  }
 }
 </script>
 
@@ -99,17 +121,18 @@ const handleFormSubmit = () => {
       <form v-if="!submitSuccess" @submit.prevent="handleFormSubmit" class="contact-form">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" v-model="form.name" required placeholder="John Doe" />
+          <input type="text" id="name" name="name" v-model="form.name" required placeholder="John Doe" />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="form.email" required placeholder="john@example.com" />
+          <input type="email" id="email" name="email" v-model="form.email" required placeholder="john@example.com" />
         </div>
         <div class="form-group">
           <label for="message">Message</label>
           <div class="textarea-wrapper">
             <textarea 
               id="message" 
+              name="message"
               v-model="form.message" 
               required 
               placeholder="Your message here..." 
@@ -120,6 +143,9 @@ const handleFormSubmit = () => {
               {{ form.message.length }}/1000
             </div>
           </div>
+        </div>
+        <div v-if="submitError" class="error-notification">
+          Something went wrong. Please try again or use direct email.
         </div>
         <button type="submit" class="submit-btn" :disabled="isSubmitting">
           <span v-if="!isSubmitting">Send Message 🚀</span>
@@ -428,9 +454,14 @@ h2 {
   transition: all 0.3s ease;
 }
 
-.char-count.near-limit {
+.error-notification {
   color: #ef4444;
-  opacity: 1;
+  font-size: 0.9rem;
+  padding: 0.8rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  text-align: center;
 }
 
 .submit-btn {
