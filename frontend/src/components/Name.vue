@@ -2,7 +2,7 @@
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      Software Engineer | B.E.
+      Software Engineer | B.E
     </h3>
   </div>
 </template>
