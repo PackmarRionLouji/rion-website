@@ -5,10 +5,18 @@ import IconGitHub from '../components/icons/IconGitHub.vue'
 import IconLinkedIn from '../components/icons/IconLinkedIn.vue'
 import IconMedium from '../components/icons/IconMedium.vue'
 import IconCopy from '../components/icons/IconCopy.vue'
+import IconDownload from '../components/icons/IconDownload.vue'
+import IconInstagram from '../components/icons/IconInstagram.vue'
 
 const contacts = [
   { name: 'Email', value: 'sjrion01@gmail.com', url: 'mailto:sjrion01@gmail.com', icon: IconEmail, canCopy: true },
   { name: 'LinkedIn', value: 'packmarrionlouji', url: 'https://www.linkedin.com/in/packmarrionlouji/', icon: IconLinkedIn },
+]
+
+const otherPlaces = [
+  { name: 'GitHub', url: 'https://github.com/PackmarRionLouji', icon: IconGitHub },
+  { name: 'Medium', url: 'https://medium.com/', icon: IconMedium },
+  { name: 'Instagram', url: 'https://www.instagram.com/rion_louji?igsh=OWJvbGR4Z2FmdGZw', icon: IconInstagram },
 ]
 
 const copyFeedback = ref('')
@@ -26,8 +34,17 @@ const copyToClipboard = (text, e) => {
 
 <template>
   <div class="view-content animate-slide-up">
-    <h2>Let's Talk Tech</h2>
-    <p class="subtitle">Feel free to reach out for collaborations, opportunities, or just to say hello.</p>
+    <div class="header-section">
+      <div class="availability-tag academic">
+        <span class="pulse-dot academic"></span>
+        Preparing for MS • Researching Systems & AI
+      </div>
+      <h2>Let's Talk Tech</h2>
+      <p class="subtitle">
+        Feel free to reach out for collaborations or just to say hello. <br/>
+        <span class="location-text">📍 Chennai, India • GMT+5:30</span>
+      </p>
+    </div>
     
     <div v-if="copyFeedback" class="copy-toast">{{ copyFeedback }}</div>
 
@@ -62,6 +79,25 @@ const copyToClipboard = (text, e) => {
       </a>
     </div>
 
+    <!-- Resume Section -->
+    <div class="resume-section">
+      <a href="/Resume_PackmarRionLouji.pdf" download class="resume-btn">
+        <IconDownload />
+        Download My Resume (PDF)
+      </a>
+    </div>
+
+    <!-- Other Places Section -->
+    <div class="other-places">
+      <h4>Other Places</h4>
+      <div class="other-links">
+        <a v-for="place in otherPlaces" :key="place.name" :href="place.url" target="_blank" class="other-link">
+          <component :is="place.icon" class="other-icon" />
+          {{ place.name }}
+        </a>
+      </div>
+    </div>
+
     <button class="back-btn" @click="$router.push('/')">← Back Home</button>
   </div>
 </template>
@@ -71,6 +107,64 @@ const copyToClipboard = (text, e) => {
   color: var(--color-text);
   width: 100%;
   max-width: 800px;
+}
+
+.header-section {
+  margin-bottom: 3rem;
+}
+
+.availability-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 100px;
+  color: #10b981;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.availability-tag.academic {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulse-dot.academic {
+  background-color: #3b82f6;
+}
+
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.pulse-dot.academic::after {
+  background-color: #3b82f6;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  70% { transform: scale(3); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
 }
 
 h2 {
@@ -88,11 +182,18 @@ h2 {
   line-height: 1.6;
 }
 
+.location-text {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .contact-card {
@@ -190,6 +291,79 @@ h2 {
 .contact-details span {
   font-size: 0.95rem;
   opacity: 0.7;
+}
+
+.resume-section {
+  margin-bottom: 4rem;
+}
+
+.resume-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 1.2rem;
+  background: var(--color-heading);
+  color: var(--color-background);
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.resume-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+.other-places {
+  margin-bottom: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.other-places h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  margin-bottom: 1.5rem;
+}
+
+.other-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.other-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.other-link:hover {
+  background: var(--color-card-hover);
+  border-color: var(--color-heading);
+  transform: translateY(-2px);
+}
+
+.other-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.8;
 }
 
 .back-btn {
