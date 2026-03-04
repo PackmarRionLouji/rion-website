@@ -10,8 +10,6 @@ import IconContact from './icons/IconContact.vue'
 import IconExtraCurricular from './icons/IconExtraCurricular.vue'
 import IconCertifications from './icons/IconCertifications.vue'
 
-const showList = ref(false)
-
 const items = [
   { id: 1, component: IconAbout, heading: 'My Story & Passions', route: '/about' },
   { id: 2, component: IconEducation, heading: 'Academic Background', route: '/education' },
@@ -23,34 +21,24 @@ const items = [
   { id: 8, component: IconContact, heading: "Let's Connect", route: '/contact' },
 ]
 
-onMounted(() => {
-  setTimeout(() => {
-    showList.value = true
-  }, 100)
-})
 </script>
 
 <template>
   <div class="portfolio">
-    <TransitionGroup 
-      name="stagger" 
-      tag="div" 
-      class="portfolio-list"
-    >
+    <div class="portfolio-list">
       <PortfolioSection 
         v-for="(item, index) in items" 
         :key="item.id"
-        v-show="showList"
-        :style="{ transitionDelay: `${index * 150}ms` }"
         @click="$router.push(item.route)"
-        class="clickable-section"
+        class="clickable-section animate-slide-up"
+        :style="{ animationDelay: `${index * 0.15}s` }"
       >
         <template #icon>
           <component :is="item.component" />
         </template>
         <template #heading>{{ item.heading }}</template>
       </PortfolioSection>
-    </TransitionGroup>
+    </div>
   </div>
 </template>
 

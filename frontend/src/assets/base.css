@@ -139,17 +139,20 @@ body {
 }
 
 /* Stagger List Transitions */
-.stagger-enter-active,
-.stagger-leave-active {
-  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+/* Stagger List Animations (CSS Only) */
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUpFade 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.stagger-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-.stagger-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
