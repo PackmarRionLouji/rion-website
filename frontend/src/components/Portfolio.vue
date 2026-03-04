@@ -7,16 +7,18 @@ import IconExperience from './icons/IconExperience.vue'
 import IconSkills from './icons/IconSkills.vue'
 import IconProjects from './icons/IconProjects.vue'
 import IconContact from './icons/IconContact.vue'
+import IconExtraCurricular from './icons/IconExtraCurricular.vue'
 
 const showList = ref(false)
 
 const items = [
-  { id: 1, component: IconAbout, heading: 'About me' },
+  { id: 1, component: IconAbout, heading: 'About me and Interests' },
   { id: 2, component: IconEducation, heading: 'Education' },
   { id: 3, component: IconExperience, heading: 'Experience' },
   { id: 4, component: IconSkills, heading: 'Skills' },
   { id: 5, component: IconProjects, heading: 'Projects' },
-  { id: 6, component: IconContact, heading: 'Contact me' },
+  { id: 6, component: IconExtraCurricular, heading: 'Extra Curricular' },
+  { id: 7, component: IconContact, heading: 'Contact me' },
 ]
 
 onMounted(() => {
