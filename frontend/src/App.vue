@@ -2,11 +2,6 @@
   <div class="layout-wrapper">
     <header class="left-panel">
       <div class="profile-container">
-        <img
-          alt="Profile logo"
-          class="profile-logo"
-          src="./assets/rion-louji.svg"
-        />
         <nav class="navigation-content">
           <Name msg="Packmar Rion Louji" />
         </nav>
@@ -50,21 +45,9 @@ import CustomCursor from './components/CustomCursor.vue';
 .profile-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.profile-logo {
-  height: 200px;
-  width: auto;
-  object-fit: contain;
-  border-radius: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.profile-logo:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
 }
 
 .navigation-content {
@@ -95,8 +78,7 @@ import CustomCursor from './components/CustomCursor.vue';
   }
   
   .profile-container {
-    align-items: flex-start;
-    gap: 2rem;
+    justify-content: center;
   }
 
   .theme-controls {
