@@ -13,14 +13,14 @@ import IconCertifications from './icons/IconCertifications.vue'
 const showList = ref(false)
 
 const items = [
-  { id: 1, component: IconAbout, heading: 'My Story & Passions' },
-  { id: 2, component: IconEducation, heading: 'Academic Background' },
-  { id: 3, component: IconExperience, heading: 'Professional Journey' },
-  { id: 4, component: IconSkills, heading: 'Technical Expertise' },
-  { id: 5, component: IconCertifications, heading: 'Certifications' },
-  { id: 6, component: IconProjects, heading: 'Featured Work' },
-  { id: 7, component: IconExtraCurricular, heading: 'Beyond the Code' },
-  { id: 8, component: IconContact, heading: "Let's Connect" },
+  { id: 1, component: IconAbout, heading: 'My Story & Passions', route: '/about' },
+  { id: 2, component: IconEducation, heading: 'Academic Background', route: '/education' },
+  { id: 3, component: IconExperience, heading: 'Professional Journey', route: '/experience' },
+  { id: 4, component: IconSkills, heading: 'Technical Expertise', route: '/skills' },
+  { id: 5, component: IconCertifications, heading: 'Certifications', route: '/certifications' },
+  { id: 6, component: IconProjects, heading: 'Featured Work', route: '/projects' },
+  { id: 7, component: IconExtraCurricular, heading: 'Beyond the Code', route: '/extra-curricular' },
+  { id: 8, component: IconContact, heading: "Let's Connect", route: '/contact' },
 ]
 
 onMounted(() => {
@@ -42,6 +42,8 @@ onMounted(() => {
         :key="item.id"
         v-show="showList"
         :style="{ transitionDelay: `${index * 150}ms` }"
+        @click="$router.push(item.route)"
+        class="clickable-section"
       >
         <template #icon>
           <component :is="item.component" />
@@ -63,6 +65,10 @@ onMounted(() => {
   flex-direction: column;
   gap: 2rem;
   padding-bottom: 2rem;
+}
+
+.clickable-section {
+  cursor: pointer;
 }
 </style>
 
