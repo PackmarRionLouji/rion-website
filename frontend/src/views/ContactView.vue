@@ -39,6 +39,9 @@ const copyToClipboard = (text, e) => {
 
 <template>
   <div class="view-content animate-slide-up">
+    <button class="back-link" @click="$router.push('/')">
+      <span class="arrow">←</span> Back Home
+    </button>
     <div class="header-section">
       <div class="availability-tag academic">
         <span class="pulse-dot academic"></span>
@@ -140,8 +143,6 @@ const copyToClipboard = (text, e) => {
         </button>
       </form>
     </div>
-
-    <button class="back-btn" @click="$router.push('/')">← Back Home</button>
   </div>
 </template>
 
@@ -154,6 +155,33 @@ const copyToClipboard = (text, e) => {
 
 .header-section {
   margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  background: transparent;
+  border: none;
+  color: var(--color-heading);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+}
+
+.back-link:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.back-link .arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .availability-tag {
@@ -505,20 +533,6 @@ h2 {
 }
 
 .back-btn {
-  padding: 0.8rem 1.5rem;
-  background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  color: var(--color-heading);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-  background: var(--color-card-bg);
-  border-color: var(--color-heading);
-  transform: translateX(-5px);
+  display: none;
 }
 </style>
