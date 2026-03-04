@@ -19,6 +19,7 @@ const otherPlaces = [
   { name: 'Instagram', url: 'https://www.instagram.com/rion_louji?igsh=OWJvbGR4Z2FmdGZw', icon: IconInstagram },
 ]
 
+const currentView = ref('info') // 'info' or 'form'
 const copyFeedback = ref('')
 const form = ref({
   name: '',
@@ -53,107 +54,129 @@ const copyToClipboard = (text, e) => {
       </button>
     </div>
 
-    <div class="header-section">
-      <div class="availability-tag academic">
-        <span class="pulse-dot academic"></span>
-        MS Admitted • Preparing for Visa
-      </div>
-      <h2>Let's Talk Tech</h2>
-      <p class="subtitle">
-        Feel free to reach out for collaborations or just to say hello. <br/>
-        <span class="location-text">📍 Chennai, India • GMT+5:30</span>
-      </p>
-    </div>
-    
-    <div v-if="copyFeedback" class="copy-toast">{{ copyFeedback }}</div>
-
-    <div class="contact-grid">
-      <a 
-        v-for="contact in contacts" 
-        :key="contact.name"
-        :href="contact.url" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="contact-card border-card"
-      >
-        <div class="icon-wrapper">
-          <component :is="contact.icon" class="contact-icon" />
-        </div>
-        <div class="contact-details">
-          <div class="title-row">
-            <h3>{{ contact.name }}</h3>
+    <Transition name="fade-slide" mode="out-in">
+      <div v-if="currentView === 'info'" key="info" class="view-pane">
+        <div class="header-section">
+          <div class="availability-tag academic">
+            <span class="pulse-dot academic"></span>
+            MS Admitted • Preparing for Visa
           </div>
-          <div class="value-row">
-            <span>{{ contact.value }}</span>
-            <button 
-              v-if="contact.canCopy" 
-              class="copy-btn-inline" 
-              @click="copyToClipboard(contact.value, $event)"
-              title="Copy to clipboard"
-            >
-              <IconCopy />
-            </button>
-          </div>
+          <h2>Let's Talk Tech</h2>
+          <p class="subtitle">
+            Feel free to reach out for collaborations or just to say hello. <br/>
+            <span class="location-text">📍 Chennai, India • GMT+5:30</span>
+          </p>
         </div>
-      </a>
-    </div>
-
-    <!-- Resume Section -->
-    <div class="resume-section">
-      <a href="/Resume_PackmarRionLouji.pdf" download class="resume-btn">
-        <IconDownload />
-        Download My Resume (PDF)
-      </a>
-    </div>
-
-    <!-- Other Places Section -->
-    <div class="other-places">
-      <h4>Other Places</h4>
-      <div class="other-links">
-        <a v-for="place in otherPlaces" :key="place.name" :href="place.url" target="_blank" class="other-link">
-          <component :is="place.icon" class="other-icon" />
-          {{ place.name }}
-        </a>
-      </div>
-    </div>
-
-    <!-- Contact Form Section -->
-    <div class="form-section">
-      <div class="section-title">
-        <h4>Send a Message</h4>
-        <div class="divider"></div>
-      </div>
-      
-      <form class="contact-form">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" v-model="form.name" required placeholder="John Doe" />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="form.email" required placeholder="john@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <div class="textarea-wrapper">
-            <textarea 
-              id="message" 
-              v-model="form.message" 
-              required 
-              placeholder="What's on your mind?..." 
-              rows="5"
-              maxlength="1000"
-            ></textarea>
-            <div class="char-count">
-              {{ form.message.length }}/1000
+        
+        <Transition name="toast">
+          <div v-if="copyFeedback" class="copy-toast">
+            <div class="toast-content">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ copyFeedback }}</span>
             </div>
           </div>
+        </Transition>
+
+        <div class="contact-grid">
+          <a 
+            v-for="contact in contacts" 
+            :key="contact.name"
+            :href="contact.url" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="contact-card border-card"
+          >
+            <div class="icon-wrapper">
+              <component :is="contact.icon" class="contact-icon" />
+            </div>
+            <div class="contact-details">
+              <div class="title-row">
+                <h3>{{ contact.name }}</h3>
+              </div>
+              <div class="value-row">
+                <span>{{ contact.value }}</span>
+                <button 
+                  v-if="contact.canCopy" 
+                  class="copy-btn-inline" 
+                  @click="copyToClipboard(contact.value, $event)"
+                  title="Copy to clipboard"
+                >
+                  <IconCopy />
+                </button>
+              </div>
+            </div>
+          </a>
         </div>
-        <button type="submit" class="submit-btn" disabled title="Registration coming soon">
-          Send Message 🚀
+
+        <div class="resume-section">
+          <a href="/Resume_PackmarRionLouji.pdf" download class="resume-btn">
+            <IconDownload />
+            Download My Resume (PDF)
+          </a>
+        </div>
+
+        <div class="other-places">
+          <h4>Other Places</h4>
+          <div class="other-links">
+            <a v-for="place in otherPlaces" :key="place.name" :href="place.url" target="_blank" class="other-link">
+              <component :is="place.icon" class="other-icon" />
+              {{ place.name }}
+            </a>
+          </div>
+        </div>
+
+        <button class="go-to-form-btn" @click="currentView = 'form'">
+          <span>Send a Message</span>
+          <span class="arrow">→</span>
         </button>
-      </form>
-    </div>
+      </div>
+
+      <div v-else key="form" class="view-pane">
+        <button class="back-to-info" @click="currentView = 'info'">
+          <span class="arrow">←</span>
+          <span>Back to Info</span>
+        </button>
+
+        <div class="header-section mini">
+          <h2>Get in Touch</h2>
+          <p class="subtitle">I'll get back to you as soon as possible.</p>
+        </div>
+
+        <div class="form-section-standalone">
+          <form class="contact-form">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" v-model="form.name" required placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" v-model="form.email" required placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <div class="textarea-wrapper">
+                <textarea 
+                  id="message" 
+                  v-model="form.message" 
+                  required 
+                  placeholder="What's on your mind?..." 
+                  rows="6"
+                  maxlength="1000"
+                ></textarea>
+                <div class="char-count">
+                  {{ form.message.length }}/1000
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="submit-btn" disabled title="Coming soon">
+              Send Message 🚀
+            </button>
+          </form>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -480,6 +503,80 @@ h2 {
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   filter: brightness(1.1);
+}
+
+.go-to-form-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 2rem;
+  background: rgba(var(--color-heading-rgb), 0.03);
+  border: 1px dashed rgba(var(--color-heading-rgb), 0.2);
+  border-radius: 24px;
+  color: var(--color-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  margin-top: 3rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  letter-spacing: -0.01em;
+}
+
+.go-to-form-btn:hover {
+  background: rgba(var(--color-heading-rgb), 0.08);
+  border-color: var(--color-heading);
+  border-style: solid;
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(var(--color-heading-rgb), 0.15);
+}
+
+.go-to-form-btn .arrow {
+  font-size: 1.6rem;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.go-to-form-btn:hover .arrow {
+  transform: translateX(8px);
+}
+
+.back-to-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  color: var(--color-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.back-to-info:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(var(--color-heading-rgb), 0.4);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-info .arrow {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.back-to-info:hover .arrow {
+  transform: translateX(-3px);
 }
 
 .other-places {
