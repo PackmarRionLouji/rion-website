@@ -8,6 +8,12 @@
   <div class="layout-wrapper">
     <header class="left-panel">
       <div class="profile-container">
+        <!-- <div class="profile-card-wrapper">
+          <div class="profile-elegant-card">
+            <img src="@/assets/profile.jpg" alt="Packmar Rion Louji" class="profile-image-refined" />
+            <div class="card-glass-shine"></div>
+          </div>
+        </div> -->
         <nav class="navigation-content">
           <Name msg="Packmar Rion Louji" />
         </nav>
@@ -51,9 +57,81 @@ import CustomCursor from './components/CustomCursor.vue';
 .profile-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex: 1;
+  gap: 2rem;
+}
+
+.profile-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  animation: cardBreathe 8s ease-in-out infinite;
+}
+
+.profile-elegant-card {
+  position: relative;
+  width: 160px; /* Reduced from 200px */
+  height: 208px; /* Maintained 1:1.3 ratio */
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 16px 32px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image-refined {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: brightness(1.02) contrast(1.02);
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-glass-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.profile-elegant-card:hover {
+  transform: translateY(-8px) rotateX(5deg);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.15),
+    0 24px 48px rgba(0, 0, 0, 0.2);
+}
+
+.profile-elegant-card:hover .profile-image-refined {
+  transform: scale(1.05);
+}
+
+@keyframes cardBreathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.01); }
 }
 
 .navigation-content {
@@ -94,6 +172,18 @@ import CustomCursor from './components/CustomCursor.vue';
   
   .profile-container {
     justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .profile-card-wrapper {
+    width: 200px; /* Reduced from 240px */
+    height: 260px; /* Reduced from 300px */
+    margin-bottom: 2rem;
+  }
+  
+  .profile-elegant-card {
+    width: 100%;
+    height: 100%;
   }
 
   .theme-controls {
