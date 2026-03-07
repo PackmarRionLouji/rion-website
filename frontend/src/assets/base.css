@@ -93,7 +93,15 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
-  cursor: none !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
 }
 
 body {

@@ -45,6 +45,12 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
 .cursor-dot {
   width: 8px;
   height: 8px;

@@ -15,7 +15,7 @@ const contacts = [
 
 const otherPlaces = [
   { name: 'GitHub', url: 'https://github.com/PackmarRionLouji', icon: IconGitHub },
-  { name: 'Medium', url: 'https://medium.com/', icon: IconMedium },
+  { name: 'Medium', url: 'https://medium.com/@sjrion01', icon: IconMedium },
   { name: 'Instagram', url: 'https://www.instagram.com/rion_louji?igsh=OWJvbGR4Z2FmdGZw', icon: IconInstagram },
 ]
 
