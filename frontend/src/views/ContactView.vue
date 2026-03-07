@@ -57,10 +57,6 @@ const copyToClipboard = (text, e) => {
     <Transition name="fade-slide" mode="out-in">
       <div v-if="currentView === 'info'" key="info" class="view-pane">
         <div class="header-section">
-          <div class="availability-tag academic">
-            <span class="pulse-dot academic"></span>
-            MS Admitted • Preparing for Visa
-          </div>
           <h2>Let's Talk Tech</h2>
           <p class="subtitle">
             Feel free to reach out for collaborations or just to say hello. <br/>
