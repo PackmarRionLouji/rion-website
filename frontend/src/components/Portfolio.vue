@@ -9,6 +9,7 @@ import IconProjects from './icons/IconProjects.vue'
 import IconContact from './icons/IconContact.vue'
 import IconExtraCurricular from './icons/IconExtraCurricular.vue'
 import IconCertifications from './icons/IconCertifications.vue'
+import IconAwards from './icons/IconAwards.vue'
 
 const items = [
   { id: 1, component: IconAbout, heading: 'My Story & Passions', route: '/about' },
@@ -17,8 +18,9 @@ const items = [
   { id: 4, component: IconSkills, heading: 'Technical Expertise', route: '/skills' },
   { id: 5, component: IconCertifications, heading: 'Certifications', route: '/certifications' },
   { id: 6, component: IconProjects, heading: 'Featured Work', route: '/projects' },
-  { id: 7, component: IconExtraCurricular, heading: 'Beyond the Code', route: '/extra-curricular' },
-  { id: 8, component: IconContact, heading: "Let's Connect", route: '/contact' },
+  { id: 7, component: IconAwards, heading: 'Awards & Recognitions', route: '/awards' },
+  { id: 8, component: IconExtraCurricular, heading: 'Beyond the Code', route: '/extra-curricular' },
+  { id: 9, component: IconContact, heading: "Let's Connect", route: '/contact' },
 ]
 
 </script>
