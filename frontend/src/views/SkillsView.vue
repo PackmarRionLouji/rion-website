@@ -247,7 +247,7 @@ h2 {
 }
 
 .glow-1 { top: -100px; right: -100px; background: #3b82f6; }
-.glow-2 { bottom: -100px; left: -100px; background: 20px; }
+.glow-2 { bottom: -100px; left: -100px; background: #3498db; }
 
 @keyframes slideUpFadeIn {
   from {

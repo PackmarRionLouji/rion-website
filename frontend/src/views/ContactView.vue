@@ -36,6 +36,40 @@ const copyToClipboard = (text, e) => {
     copyFeedback.value = ''
   }, 2000)
 }
+
+const isSubmitting = ref(false)
+const isSuccess = ref(false)
+const errorMessage = ref('')
+
+const submitForm = async () => {
+  isSubmitting.value = true
+  errorMessage.value = ''
+  
+  try {
+    const response = await fetch('https://formspree.io/f/xgonebnp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: form.value.name,
+        email: form.value.email,
+        message: form.value.message
+      })
+    })
+
+    if (response.ok) {
+      isSuccess.value = true
+      form.value = { name: '', email: '', message: '' }
+    } else {
+      errorMessage.value = 'Something went wrong. Please try again or email me directly.'
+    }
+  } catch (error) {
+    errorMessage.value = 'Network error. Please check your connection and try again.'
+  } finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <template>
@@ -141,7 +175,15 @@ const copyToClipboard = (text, e) => {
         </div>
 
         <div class="form-section-standalone">
-          <form class="contact-form">
+          <div v-if="isSuccess" class="success-message">
+            <div class="success-icon">✨</div>
+            <h3>Message Sent!</h3>
+            <p>Thanks for reaching out. I'll get back to you shortly.</p>
+            <button class="back-btn-premium mini" @click="isSuccess = false; currentView = 'info'">
+              Back to Contact
+            </button>
+          </div>
+          <form v-else class="contact-form" @submit.prevent="submitForm">
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" id="name" v-model="form.name" required placeholder="John Doe" />
@@ -166,9 +208,15 @@ const copyToClipboard = (text, e) => {
                 </div>
               </div>
             </div>
-            <button type="submit" class="submit-btn" disabled title="Coming soon">
-              Send Message 🚀
+            <button 
+              type="submit" 
+              class="submit-btn" 
+              :disabled="isSubmitting"
+            >
+              <span v-if="isSubmitting">Sending...</span>
+              <span v-else>Send Message 🚀</span>
             </button>
+            <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
           </form>
         </div>
       </div>
@@ -708,12 +756,45 @@ h2 {
   padding: 1rem;
   font-size: 1rem;
   font-weight: 700;
-  cursor: not-allowed;
-  opacity: 0.5;
+  cursor: pointer;
+  opacity: 1;
   margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.success-message {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.error-msg {
+  color: #ef4444;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .back-btn {
