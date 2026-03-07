@@ -84,6 +84,8 @@ const animateOrb = (el, i) => {
   justify-content: space-between;
   padding: 2rem;
   min-height: 50vh;
+  position: relative;
+  z-index: 10;
 }
 
 .profile-container {
@@ -182,6 +184,8 @@ const animateOrb = (el, i) => {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth;
+  position: relative;
+  z-index: 10;
   
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -238,9 +242,10 @@ const animateOrb = (el, i) => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: 1; /* Move forward but below content */
   overflow: hidden;
   pointer-events: none;
+  background: transparent;
 }
 
 .orb {

@@ -101,7 +101,7 @@ const animate = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2; /* Behind everything */
+  z-index: 0; /* Inherits from parent positive context */
   pointer-events: none;
   background: transparent;
 }
