@@ -14,7 +14,7 @@
       <a href="https://github.com/PackmarRionLouji" target="_blank" rel="noopener noreferrer" class="social-icon" title="GitHub">
         <IconGitHub />
       </a>
-      <a href="https://medium.com/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Medium">
+      <a href="https://medium.com/@sjrion01" target="_blank" rel="noopener noreferrer" class="social-icon" title="Medium">
         <IconMedium />
       </a>
     </div>
