@@ -9,37 +9,35 @@ BACKEND_DIR=service
 help:
 	@echo "Available targets: install, dev, frontend, backend, build, clean, bootstrap"
 
-# Installs dependencies
+# Installs dependencies (Run from root for workspaces)
 install:
-	cd $(FRONTEND_DIR) && yarn install
-	cd $(BACKEND_DIR) && yarn install
+	yarn install
 
 # Dev run
 dev:
-	cd $(BACKEND_DIR) && yarn dev &
-	cd $(FRONTEND_DIR) && yarn dev
+	yarn workspace service dev &
+	yarn workspace frontend dev
 
 # Run frontend
 frontend:
-	cd $(FRONTEND_DIR) && yarn dev
+	yarn workspace frontend dev
 
 # Run backend
 backend:
-	cd $(BACKEND_DIR) && yarn dev
+	yarn workspace service dev
 
 # Build frontend
 build:
-	cd $(FRONTEND_DIR) && yarn build
+	yarn workspace frontend build
 
 # Clean build output
 clean:
 	rm -rf $(FRONTEND_DIR)/dist
 
-# 🧹 Bootstrap target (place it here or at the bottom — both are fine)
+# 🧹 Bootstrap target
 bootstrap:
-	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/yarn.lock $(FRONTEND_DIR)/.yarn $(FRONTEND_DIR)/dist
-	rm -rf $(BACKEND_DIR)/node_modules $(BACKEND_DIR)/yarn.lock $(BACKEND_DIR)/.yarn
-	cd $(FRONTEND_DIR) && yarn install
-	rm -rf $(FRONTEND_DIR)/.yarn/cache
-	cd $(BACKEND_DIR) && yarn install
-	rm -rf $(BACKEND_DIR)/.yarn/cache
+	rm -rf package-lock.json yarn.lock node_modules
+	rm -rf $(FRONTEND_DIR)/node_modules $(FRONTEND_DIR)/dist
+	rm -rf $(BACKEND_DIR)/node_modules
+	yarn install
+	@echo "✨ Bootstrap complete!"

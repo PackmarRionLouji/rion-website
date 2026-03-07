@@ -46,8 +46,7 @@ const items = [
 
 <style scoped>
 .portfolio {
-  color: var(--color-text);
-  width: 100%;
+  display: contents;
 }
 
 .portfolio-list {
@@ -55,10 +54,15 @@ const items = [
   flex-direction: column;
   gap: 2rem;
   padding-bottom: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
 }
 
 .clickable-section {
   cursor: pointer;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 </style>
 

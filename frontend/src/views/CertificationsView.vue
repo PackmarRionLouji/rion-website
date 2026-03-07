@@ -1,42 +1,48 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-const expandedIndices = ref([0, 1, 2, 3, 4, 5]);
-const selectedImages = ref([]);
-const currentImageIndex = ref(0);
+const expandedIndex = ref(null);
+const magnifiedItem = ref(null);
+const magnifiedGallery = ref([]);
+const magnifiedIndex = ref(0);
 
 const toggleExpand = (index) => {
-  if (expandedIndices.value.includes(index)) {
-    expandedIndices.value = expandedIndices.value.filter(i => i !== index);
-  } else {
-    expandedIndices.value.push(index);
+  expandedIndex.value = expandedIndex.value === index ? null : index;
+};
+
+const magnify = (item, gallery) => {
+  magnifiedGallery.value = gallery;
+  magnifiedIndex.value = gallery.indexOf(item);
+  magnifiedItem.value = item;
+};
+
+const closeMagnify = () => {
+  magnifiedItem.value = null;
+  magnifiedGallery.value = [];
+};
+
+const nextMagnified = () => {
+  if (magnifiedGallery.value.length <= 1) return;
+  if (magnifiedIndex.value < magnifiedGallery.value.length - 1) {
+    magnifiedIndex.value++;
+    magnifiedItem.value = magnifiedGallery.value[magnifiedIndex.value];
   }
 };
 
-const openGallery = (images) => {
-  selectedImages.value = images;
-  currentImageIndex.value = 0;
-};
-
-const closeGallery = () => {
-  selectedImages.value = [];
-};
-
-const nextImage = () => {
-  if (selectedImages.value.length === 0) return;
-  currentImageIndex.value = (currentImageIndex.value + 1) % selectedImages.value.length;
-};
-
-const prevImage = () => {
-  if (selectedImages.value.length === 0) return;
-  currentImageIndex.value = (currentImageIndex.value - 1 + selectedImages.value.length) % selectedImages.value.length;
+const prevMagnified = () => {
+  if (magnifiedGallery.value.length <= 1) return;
+  if (magnifiedIndex.value > 0) {
+    magnifiedIndex.value--;
+    magnifiedItem.value = magnifiedGallery.value[magnifiedIndex.value];
+  }
 };
 
 const handleKeyDown = (e) => {
-  if (selectedImages.value.length === 0) return;
-  if (e.key === 'ArrowRight') nextImage();
-  if (e.key === 'ArrowLeft') prevImage();
-  if (e.key === 'Escape') closeGallery();
+  if (!magnifiedItem.value) return;
+  
+  if (e.key === 'Escape') closeMagnify();
+  if (e.key === 'ArrowRight') nextMagnified();
+  if (e.key === 'ArrowLeft') prevMagnified();
 };
 
 onMounted(() => {
@@ -164,73 +170,89 @@ const isPdf = (url) => url.toLowerCase().endsWith('.pdf');
       </button>
     </div>
 
-    <div class="header-section">
-      <h2>Certifications & Mastery</h2>
-      <p class="subtitle">Continuously expanding technical and creative horizons</p>
-    </div>
+    <div class="certs-container">
+      <div class="header-section">
+        <h2>Certifications & Mastery</h2>
+        <p class="subtitle">Continuously expanding technical and creative horizons</p>
+      </div>
 
-    <div class="certs-grid">
-      <div v-for="(cert, index) in certs" :key="index" 
-           class="cert-card" 
-           :class="{ 'is-expanded': expandedIndices.includes(index) }"
-           @click="toggleExpand(index)"
-           :style="{ animationDelay: `${index * 0.1}s` }">
-        <div class="card-glass"></div>
-        
-        <div class="card-header">
-          <div class="icon-box" :style="{ background: cert.color }">{{ cert.icon }}</div>
-          <div class="title-area">
-            <h3>{{ cert.title }}</h3>
-            <span class="provider">{{ cert.provider }}</span>
-          </div>
-          <span class="cert-date">{{ cert.date }}</span>
-        </div>
-
-        <div class="expand-pane">
-          <ul class="cert-points">
-            <li v-for="(point, pIdx) in cert.points" :key="pIdx">{{ point }}</li>
-          </ul>
+      <div class="certs-grid">
+        <div v-for="(cert, index) in certs" :key="index" 
+             class="cert-card" 
+             :class="{ 'is-expanded': expandedIndex === index }"
+             @click="toggleExpand(index)"
+             :style="{ animationDelay: `${index * 0.1}s` }">
+          <div class="card-glass"></div>
           
-          <div class="view-action" @click.stop="openGallery(cert.images)">
-            <span class="view-text">View Verify Documents</span>
-            <span class="view-icon">👁️</span>
+          <div class="card-header">
+            <div class="icon-box" :style="{ background: cert.color }">{{ cert.icon }}</div>
+            <div class="title-area">
+              <h3>{{ cert.title }}</h3>
+              <span class="provider">{{ cert.provider }}</span>
+            </div>
+            <span class="cert-date">{{ cert.date }}</span>
+          </div>
+
+          <div class="expand-pane">
+            <ul class="cert-points">
+              <li v-for="(point, pIdx) in cert.points" :key="pIdx">{{ point }}</li>
+            </ul>
+            
+             <div class="inline-cert-viewer">
+                <div class="cert-scroll-container">
+                  <div v-for="(img, imgIdx) in cert.images" :key="imgIdx" 
+                       class="cert-item-box"
+                       @click.stop="magnify(img, cert.images)">
+                    <div v-if="isPdf(img)" class="pdf-wrapper">
+                      <iframe :src="img" class="inline-pdf"></iframe>
+                      <div class="pdf-overlay-glass"></div>
+                    </div>
+                    <img v-else :src="img" class="inline-img" />
+                    <div class="item-glass-overlay"></div>
+                  </div>
+                </div>
+                <div v-if="cert.images.length > 1" class="gallery-hint">
+                  <span class="scroll-arrow">⟷</span>
+                  <span>Swipe to view more</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="expand-indicator">
+              <span class="plus-minus">{{ expandedIndex === index ? '−' : '+' }}</span>
+            </div>
+            
+            <div class="card-glow" :style="{ background: cert.color }"></div>
           </div>
         </div>
-
-        <div class="expand-indicator">
-          <span class="plus-minus">{{ expandedIndices.includes(index) ? '−' : '+' }}</span>
-        </div>
-        
-        <div class="card-glow" :style="{ background: cert.color }"></div>
       </div>
     </div>
 
-    <!-- Gallery Modal -->
-    <Transition name="modal">
-      <div v-if="selectedImages.length > 0" class="modal-overlay" @click="closeGallery">
-        <div class="modal-content" @click.stop>
-          <div v-if="isPdf(selectedImages[currentImageIndex])" class="pdf-container">
-            <iframe :src="selectedImages[currentImageIndex]" class="pdf-viewport"></iframe>
+    <!-- Glass Magnify Overlay -->
+    <Transition name="magnify">
+      <div v-if="magnifiedItem" class="magnify-overlay" @click="closeMagnify">
+        <div class="magnify-content" @click.stop>
+          <div v-if="isPdf(magnifiedItem)" class="pdf-magnify-box">
+            <iframe :src="magnifiedItem" class="magnified-pdf"></iframe>
           </div>
-          <img v-else :src="selectedImages[currentImageIndex]" class="modal-image" />
+          <img v-else :src="magnifiedItem" alt="Magnified View" class="magnified-img" />
           
-          <div v-if="selectedImages.length > 1" class="modal-nav">
-            <button @click="prevImage" class="nav-btn prev">‹</button>
-            <button @click="nextImage" class="nav-btn next">›</button>
+          <div v-if="magnifiedGallery.length > 1" class="magnify-counter">
+            {{ magnifiedIndex + 1 }} / {{ magnifiedGallery.length }}
           </div>
 
-          <div class="modal-controls">
-            <div class="image-indicator">{{ currentImageIndex + 1 }} / {{ selectedImages.length }}</div>
-            <button class="close-btn" @click="closeGallery">✕</button>
-          </div>
+          <button class="magnify-close" @click="closeMagnify">×</button>
         </div>
       </div>
     </Transition>
-  </div>
-</template>
+  </template>
 
 <style scoped>
 .view-content {
+  display: contents;
+}
+
+.certs-container {
   padding: 4rem 2rem;
   max-width: 1100px;
   margin: 0 auto;
@@ -239,6 +261,7 @@ const isPdf = (url) => url.toLowerCase().endsWith('.pdf');
 .header-section {
   margin-bottom: 3.5rem;
   animation: fadeSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  scroll-snap-align: start;
 }
 
 h2 {
@@ -261,6 +284,7 @@ h2 {
   gap: 2rem;
   max-width: 850px;
   margin: 0 auto;
+  scroll-snap-align: start;
 }
 
 .cert-card {
@@ -337,7 +361,7 @@ h2 {
 }
 
 .is-expanded .expand-pane {
-  max-height: 500px;
+  max-height: 2000px; /* Increased for docs */
   opacity: 1;
   margin-top: 1.5rem;
 }
@@ -383,9 +407,92 @@ h2 {
   transform: translateX(5px);
 }
 
+/* Inline Viewer Styles */
+.inline-cert-viewer {
+  margin-top: 1.5rem;
+}
+
+.cert-scroll-container {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  padding: 0.5rem 0 1.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cert-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.cert-item-box {
+  flex: 0 0 320px;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.4s ease;
+  scroll-snap-align: start;
+}
+
+.cert-item-box:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+.item-glass-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+  pointer-events: none;
+}
+
+.inline-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.pdf-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
+
+.inline-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.pdf-overlay-glass {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: transparent;
+  z-index: 10;
+}
+
+.gallery-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  margin-top: -0.5rem;
+  padding-bottom: 1rem;
+}
+
+.cert-item-box:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
 .expand-indicator {
   position: absolute;
-  top: 2rem;
+  bottom: 2rem;
   right: 2rem;
   z-index: 2;
   width: 30px;
@@ -398,119 +505,14 @@ h2 {
   transition: all 0.3s ease;
 }
 
-.is-expanded .expand-indicator {
-  transform: rotate(180deg);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.card-glow {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 200%; height: 200%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  filter: blur(60px);
-  transition: all 0.8s ease;
-  z-index: 0;
-}
-
-.cert-card:hover .card-glow {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0.15;
-}
-
-/* Modal Styling */
-.modal-overlay {
+.nav-header { 
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(15px);
+  top: 1.5rem;
+  left: 2rem;
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  pointer-events: none;
+  scroll-snap-align: start;
 }
-
-.modal-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 85vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-image {
-  max-width: 100%;
-  max-height: 85vh;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-}
-
-.pdf-container {
-  width: 80vw;
-  height: 80vh;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-}
-
-.pdf-viewport {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.nav-btn {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  font-size: 4rem;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1010;
-  backdrop-filter: blur(10px);
-}
-
-.prev { left: 4rem; }
-.next { right: 4rem; }
-
-.modal-controls {
-  position: fixed;
-  top: 2rem; right: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  z-index: 1020;
-}
-
-.image-indicator {
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-.close-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255, 215, 0, 0.8);
-  border: none;
-  color: #000;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.nav-header { margin-bottom: 2rem; }
 
 .back-btn-premium {
   position: relative;
@@ -519,7 +521,7 @@ h2 {
   padding: 0.6rem 1.2rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 100px;
+  border-radius: 1000px;
   color: var(--color-heading);
   text-decoration: none;
   font-size: 0.9rem;
@@ -529,6 +531,7 @@ h2 {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -569,5 +572,110 @@ h2 {
   .cert-date { position: relative; margin-top: 1rem; }
   .card-header { flex-direction: column; align-items: flex-start; }
   .nav-btn { display: none; }
+}
+
+/* Glass Magnify Styles */
+.magnify-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: zoom-out;
+}
+
+.magnify-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.magnified-img {
+  max-width: 95vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+  animation: magnifyIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+.pdf-magnify-box {
+  width: 90vw;
+  height: 90vh;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  animation: magnifyIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.magnified-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.magnify-close {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  color: var(--color-heading);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.magnify-close:hover {
+  background: var(--color-heading);
+  color: var(--color-background);
+  transform: rotate(90deg);
+}
+
+.magnify-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.6rem 1.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  z-index: 10001;
+}
+
+@keyframes magnifyIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.magnify-enter-active, .magnify-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.magnify-enter-from, .magnify-leave-to {
+  opacity: 0;
 }
 </style>

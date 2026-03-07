@@ -64,38 +64,41 @@ const projects = [
       </button>
     </div>
 
-    <div class="header-section">
-      <h2>Systems & Applications</h2>
-      <p class="subtitle">A showcase of architectures built, models trained, and problems solved.</p>
-    </div>
+    <div class="projects-container">
+      <div class="header-section">
+        <h2>Systems & Applications</h2>
+        <p class="subtitle">A showcase of architectures built, models trained, and problems solved.</p>
+      </div>
 
-    <div class="projects-grid">
-      <div 
-        v-for="(project, index) in projects" 
-        :key="index" 
-        class="project-card"
-        :style="{ animationDelay: `${index * 0.1}s` }"
-      >
-        <div class="card-header">
-          <div class="title-group">
-            <h3>{{ project.title }}</h3>
-            <span class="context-badge">{{ project.context }}</span>
+      <div class="projects-grid">
+        <div 
+          v-for="(project, index) in projects" 
+          :key="index" 
+          class="project-card"
+          v-tilt
+          :style="{ animationDelay: `${index * 0.1}s` }"
+        >
+          <div class="card-header">
+            <div class="title-group">
+              <h3>{{ project.title }}</h3>
+              <span class="context-badge">{{ project.context }}</span>
+            </div>
+            <span class="period">{{ project.period }}</span>
           </div>
-          <span class="period">{{ project.period }}</span>
-        </div>
-        
-        <div class="meta-info">
-          <span class="role"><strong>Role:</strong> {{ project.role }}</span>
-          <span class="team-size" v-if="project.teamSize > 1"><strong>Team:</strong> {{ project.teamSize }} members</span>
-          <span class="team-size" v-else><strong>Team:</strong> Independent</span>
-        </div>
+          
+          <div class="meta-info">
+            <span class="role"><strong>Role:</strong> {{ project.role }}</span>
+            <span class="team-size" v-if="project.teamSize > 1"><strong>Team:</strong> {{ project.teamSize }} members</span>
+            <span class="team-size" v-else><strong>Team:</strong> Independent</span>
+          </div>
 
-        <p class="description">{{ project.description }}</p>
-        
-        <div class="tags-container">
-          <span v-for="tag in project.tags" :key="tag" class="tag">
-            {{ tag }}
-          </span>
+          <p class="description">{{ project.description }}</p>
+          
+          <div class="tags-container">
+            <span v-for="tag in project.tags" :key="tag" class="tag">
+              {{ tag }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -104,15 +107,25 @@ const projects = [
 
 <style scoped>
 .view-content {
+  display: contents;
+}
+
+.projects-container {
   color: var(--color-text);
   width: 100%;
   max-width: 900px;
   position: relative;
   margin: 0 auto;
+  padding: 4rem 2rem;
 }
 
 .nav-header {
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  scroll-snap-align: start;
 }
 
 .back-btn-premium {
@@ -132,6 +145,7 @@ const projects = [
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -163,6 +177,7 @@ const projects = [
 
 .header-section {
   margin-bottom: 3rem;
+  scroll-snap-align: start;
 }
 
 h2 {
@@ -182,6 +197,7 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  scroll-snap-align: start;
 }
 
 .project-card {

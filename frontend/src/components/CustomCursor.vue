@@ -20,8 +20,12 @@ const updateMouse = (e) => {
   mouse.x = e.clientX
   mouse.y = e.clientY
   
+  // Broadcast for Liquid Reveal
+  document.documentElement.style.setProperty('--mouse-x', `${mouse.x}px`)
+  document.documentElement.style.setProperty('--mouse-y', `${mouse.y}px`)
+  
   // Magnetic check
-  const target = e.target.closest('a, button, .interactive')
+  const target = e.target.closest('a, button, .interactive, .liquid-reveal')
   if (target) {
     const rect = target.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2

@@ -15,8 +15,8 @@
       <section class="story-section hero-section animate-fade-in">
         <div class="section-glass"></div>
         <div class="content-wrapper">
-          <h2 class="hero-title">The <span class="highlight">Creative</span> Engineer</h2>
-          <p class="hero-subtitle">
+          <h2 class="hero-title spotlight-text">The <span class="highlight">Creative</span> Engineer</h2>
+          <p class="hero-subtitle spotlight-text">
             Where the precision of <span class="text-logic">logic</span> meets the harmony of <span class="text-harmony">sound</span>.
           </p>
         </div>
@@ -109,15 +109,16 @@ const vObserveVisibility = {
 
 <style scoped>
 .view-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
+  display: contents;
 }
 
 .about-container {
   display: flex;
   flex-direction: column;
   gap: 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
 }
 
 .story-section {
@@ -125,6 +126,11 @@ const vObserveVisibility = {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
 }
 
 .story-section.is-visible, .story-section.animate-fade-in {
@@ -336,7 +342,14 @@ p {
   box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
 }
 
-.nav-header { margin-bottom: 2rem; }
+.nav-header { 
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  scroll-snap-align: start;
+}
 
 .back-btn-premium {
   position: relative;
@@ -355,6 +368,7 @@ p {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {

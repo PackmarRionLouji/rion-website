@@ -164,3 +164,26 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Advanced Spotlight reveal */
+.spotlight-text {
+  background: radial-gradient(circle 150px at var(--mouse-x, 0px) var(--mouse-y, 0px),
+      var(--color-heading) 0%,
+      rgba(255, 255, 255, 0.2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scroll Snapping Utilities */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}

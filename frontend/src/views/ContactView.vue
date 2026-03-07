@@ -226,13 +226,13 @@ const submitForm = async () => {
 
 <style scoped>
 .view-content {
-  color: var(--color-text);
-  width: 100%;
-  max-width: 800px;
+  display: contents;
 }
 
 .nav-header {
   margin-bottom: 2rem;
+  padding-top: 1rem;
+  scroll-snap-align: start;
 }
 
 .back-btn-premium {
@@ -336,6 +336,7 @@ const submitForm = async () => {
 
 .header-section {
   margin-bottom: 3.5rem;
+  scroll-snap-align: start;
 }
 
 .back-link {
@@ -605,6 +606,7 @@ h2 {
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  scroll-snap-align: start;
 }
 
 .back-to-info:hover {
@@ -797,7 +799,13 @@ h2 {
   margin-top: 1rem;
 }
 
-.nav-header { margin-bottom: 2rem; }
+.nav-header {
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+}
 
 .back-btn-premium {
   position: relative;
@@ -816,6 +824,7 @@ h2 {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {

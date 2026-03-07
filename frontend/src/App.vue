@@ -1,37 +1,35 @@
 <template>
-  <div class="background-effects">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <ThreeBackground />
-  </div>
+  <CinematicIntro @complete="handleIntroComplete" />
   
-  <div class="layout-wrapper">
-    <header class="left-panel">
-      <div class="profile-container">
-        <!-- <div class="profile-card-wrapper">
-          <div class="profile-elegant-card">
-            <img src="@/assets/profile.jpg" alt="Packmar Rion Louji" class="profile-image-refined" />
-            <div class="card-glass-shine"></div>
-          </div>
-        </div> -->
-        <nav class="navigation-content">
-          <Name msg="Packmar Rion Louji" />
-        </nav>
-      </div>
-      <div class="theme-controls">
-        <ColorPicker />
-      </div>
-    </header>
+  <div v-if="isIntroComplete" class="app-root">
+    <div class="background-effects">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <ThreeBackground />
+    </div>
+    
+    <div class="layout-wrapper">
+      <header class="left-panel">
+        <div class="profile-container">
+          <nav class="navigation-content">
+            <Name msg="Packmar Rion Louji" />
+          </nav>
+        </div>
+        <div class="theme-controls">
+          <ColorPicker />
+        </div>
+      </header>
 
-    <main class="right-panel">
-      <RouterView v-slot="{ Component }">
-        <Transition name="page" mode="out-in">
-          <component :is="Component" />
-        </Transition>
-      </RouterView>
-    </main>
-    <CustomCursor />
+      <main class="right-panel snap-container">
+        <RouterView v-slot="{ Component }">
+          <Transition name="page" mode="out-in">
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
+      </main>
+      <CustomCursor />
+    </div>
   </div>
 </template>
 
@@ -43,6 +41,13 @@ import Name from './components/Name.vue';
 import ColorPicker from './components/ColorPicker.vue';
 import CustomCursor from './components/CustomCursor.vue';
 import ThreeBackground from './components/ThreeBackground.vue';
+import CinematicIntro from './components/CinematicIntro.vue';
+
+const isIntroComplete = ref(false);
+
+const handleIntroComplete = () => {
+  isIntroComplete.value = true;
+};
 
 onMounted(() => {
   // Liquid drift for background orbs
@@ -65,6 +70,10 @@ const animateOrb = (el, i) => {
 </script>
 
 <style scoped>
+.app-root {
+  display: contents;
+}
+
 .layout-wrapper {
   display: contents;
 }
@@ -172,6 +181,7 @@ const animateOrb = (el, i) => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
   
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {

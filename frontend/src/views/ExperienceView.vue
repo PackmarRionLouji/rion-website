@@ -92,54 +92,56 @@ const toggleExpand = (index) => {
       </button>
     </div>
 
-    <div class="header-section">
-      <h2>Professional Experience</h2>
-      <p class="subtitle">A timeline of my roles, responsibilities, and technical contributions.</p>
-    </div>
+    <div class="experience-container">
+      <div class="header-section">
+        <h2>Professional Experience</h2>
+        <p class="subtitle">A timeline of my roles, responsibilities, and technical contributions.</p>
+      </div>
 
-    <div class="experience-compact">
-      <div 
-        v-for="(exp, index) in experiences" 
-        :key="index" 
-        class="exp-item"
-        :class="{ 'is-expanded': expandedIndex === index }"
-        @click="toggleExpand(index)"
-      >
-        <div class="exp-summary">
-          <div class="main-info">
-            <span class="type-dot" :class="exp.type"></span>
-            <div class="text-group">
-              <h3>{{ exp.title }}</h3>
-              <p>{{ exp.company }}</p>
-            </div>
-          </div>
-          <div class="side-info">
-            <span class="period-pill">{{ exp.period }}</span>
-            <span class="expand-icon">{{ expandedIndex === index ? '−' : '+' }}</span>
-          </div>
-        </div>
-
-        <div class="exp-details-pane">
-          <div class="details-content">
-            <div class="achievements-section">
-              <ul class="achievements-list">
-                <li v-for="(achievement, aIdx) in exp.achievements" :key="aIdx">
-                  {{ achievement }}
-                </li>
-              </ul>
-            </div>
-            
-            <div class="skills-section" v-if="exp.skills && exp.skills.length">
-              <div class="skills-container">
-                <span v-for="skill in exp.skills" :key="skill" class="skill-tag">
-                  {{ skill }}
-                </span>
+      <div class="experience-compact">
+        <div 
+          v-for="(exp, index) in experiences" 
+          :key="index" 
+          class="exp-item"
+          :class="{ 'is-expanded': expandedIndex === index }"
+          @click="toggleExpand(index)"
+        >
+          <div class="exp-summary">
+            <div class="main-info">
+              <span class="type-dot" :class="exp.type"></span>
+              <div class="text-group">
+                <h3>{{ exp.title }}</h3>
+                <p>{{ exp.company }}</p>
               </div>
             </div>
-            
-            <div class="detail-row location-row">
-              <span class="label">Location</span>
-              <span class="value">📍 {{ exp.location }}</span>
+            <div class="side-info">
+              <span class="period-pill">{{ exp.period }}</span>
+              <span class="expand-icon">{{ expandedIndex === index ? '−' : '+' }}</span>
+            </div>
+          </div>
+
+          <div class="exp-details-pane">
+            <div class="details-content">
+              <div class="achievements-section">
+                <ul class="achievements-list">
+                  <li v-for="(achievement, aIdx) in exp.achievements" :key="aIdx">
+                    {{ achievement }}
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="skills-section" v-if="exp.skills && exp.skills.length">
+                <div class="skills-container">
+                  <span v-for="skill in exp.skills" :key="skill" class="skill-tag">
+                    {{ skill }}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="detail-row location-row">
+                <span class="label">Location</span>
+                <span class="value">📍 {{ exp.location }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -158,7 +160,12 @@ const toggleExpand = (index) => {
 }
 
 .nav-header {
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  scroll-snap-align: start;
 }
 
 .back-btn-premium {
@@ -178,6 +185,7 @@ const toggleExpand = (index) => {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 .back-btn-premium .btn-content {

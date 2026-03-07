@@ -60,7 +60,7 @@ const skillCategories = [
     </div>
 
     <div class="header-section">
-      <h2>Technical Arsenal</h2>
+      <h2 class="spotlight-text">Technical Arsenal</h2>
       <p class="subtitle">A categorized overview of my languages, tools, and platforms.</p>
     </div>
 
@@ -91,15 +91,16 @@ const skillCategories = [
 
 <style scoped>
 .view-content {
-  color: var(--color-text);
-  width: 100%;
-  max-width: 900px;
-  position: relative;
-  margin: 0 auto;
+  display: contents;
 }
 
 .nav-header {
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  scroll-snap-align: start;
 }
 
 .back-btn-premium {
@@ -119,6 +120,7 @@ const skillCategories = [
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -150,6 +152,7 @@ const skillCategories = [
 
 .header-section {
   margin-bottom: 3rem;
+  scroll-snap-align: start;
 }
 
 h2 {
@@ -170,6 +173,8 @@ h2 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.5rem;
+  scroll-snap-align: start;
+  padding-bottom: 4rem; /* Buffer for bottom snapping */
 }
 
 .skill-card {

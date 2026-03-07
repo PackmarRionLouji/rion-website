@@ -57,50 +57,52 @@ const toggleExpand = (index) => {
       </button>
     </div>
 
-    <div class="header-section">
-      <h2>Academic Roadmap</h2>
-      <p class="subtitle">A timeline of my academic journey and technical foundations.</p>
-    </div>
+    <div class="education-container">
+      <div class="header-section">
+        <h2>Academic Roadmap</h2>
+        <p class="subtitle">A timeline of my academic journey and technical foundations.</p>
+      </div>
 
-    <div class="education-compact">
-      <div 
-        v-for="(edu, index) in education" 
-        :key="index" 
-        class="edu-item"
-        :class="{ 'is-expanded': expandedIndex === index }"
-        @click="toggleExpand(index)"
-      >
-        <div class="edu-summary">
-          <div class="main-info">
-            <span class="type-dot" :class="edu.type"></span>
-            <div class="text-group">
-              <h3>{{ edu.institution }}</h3>
-              <p>{{ edu.degree }}</p>
+      <div class="education-compact">
+        <div 
+          v-for="(edu, index) in education" 
+          :key="index" 
+          class="edu-item"
+          :class="{ 'is-expanded': expandedIndex === index }"
+          @click="toggleExpand(index)"
+        >
+          <div class="edu-summary">
+            <div class="main-info">
+              <span class="type-dot" :class="edu.type"></span>
+              <div class="text-group">
+                <h3>{{ edu.institution }}</h3>
+                <p>{{ edu.degree }}</p>
+              </div>
+            </div>
+            <div class="side-info">
+              <span class="score-pill">{{ edu.score }}</span>
+              <span class="expand-icon">{{ expandedIndex === index ? '−' : '+' }}</span>
             </div>
           </div>
-          <div class="side-info">
-            <span class="score-pill">{{ edu.score }}</span>
-            <span class="expand-icon">{{ expandedIndex === index ? '−' : '+' }}</span>
-          </div>
-        </div>
 
-        <div class="edu-details-pane">
-          <div class="details-content">
-            <div class="detail-row">
-              <span class="label">Tenure</span>
-              <span class="value">{{ edu.period }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Campus</span>
-              <a :href="edu.mapLink" target="_blank" @click.stop class="value-link">📍 {{ edu.location }}</a>
-            </div>
-            <div v-if="edu.group" class="detail-row">
-              <span class="label">Specialization</span>
-              <span class="value">{{ edu.group }}</span>
-            </div>
-            <div v-if="edu.link" class="detail-row">
-              <span class="label">Institution Portal</span>
-              <a :href="edu.link" target="_blank" @click.stop class="value-link">{{ edu.link.replace('https://', '').replace(/\/$/, '') }}</a>
+          <div class="edu-details-pane">
+            <div class="details-content">
+              <div class="detail-row">
+                <span class="label">Tenure</span>
+                <span class="value">{{ edu.period }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Campus</span>
+                <a :href="edu.mapLink" target="_blank" @click.stop class="value-link">📍 {{ edu.location }}</a>
+              </div>
+              <div v-if="edu.group" class="detail-row">
+                <span class="label">Specialization</span>
+                <span class="value">{{ edu.group }}</span>
+              </div>
+              <div v-if="edu.link" class="detail-row">
+                <span class="label">Institution Portal</span>
+                <a :href="edu.link" target="_blank" @click.stop class="value-link">{{ edu.link.replace('https://', '').replace(/\/$/, '') }}</a>
+              </div>
             </div>
           </div>
         </div>
@@ -120,6 +122,8 @@ const toggleExpand = (index) => {
 
 .nav-header {
   margin-bottom: 2rem;
+  padding-top: 1rem;
+  scroll-snap-align: start;
 }
 
 .back-btn-premium {
@@ -139,6 +143,7 @@ const toggleExpand = (index) => {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 .back-btn-premium .btn-content {

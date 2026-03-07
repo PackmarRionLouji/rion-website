@@ -2,38 +2,47 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const expandedIndex = ref(null);
-const selectedImages = ref([]);
-const currentImageIndex = ref(0);
+const magnifiedImage = ref(null);
+const magnifiedGallery = ref([]);
+const magnifiedIndex = ref(0);
 
 const toggleExpand = (index) => {
   expandedIndex.value = expandedIndex.value === index ? null : index;
 };
 
-const openGallery = (images) => {
-  selectedImages.value = images;
-  currentImageIndex.value = 0;
+const magnify = (img, gallery) => {
+  magnifiedGallery.value = gallery;
+  magnifiedIndex.value = gallery.indexOf(img);
+  magnifiedImage.value = img;
 };
 
-const closeGallery = () => {
-  selectedImages.value = [];
+const closeMagnify = () => {
+  magnifiedImage.value = null;
+  magnifiedGallery.value = [];
 };
 
-const nextImage = () => {
-  if (selectedImages.value.length === 0) return;
-  currentImageIndex.value = (currentImageIndex.value + 1) % selectedImages.value.length;
+const nextMagnified = () => {
+  if (magnifiedGallery.value.length <= 1) return;
+  if (magnifiedIndex.value < magnifiedGallery.value.length - 1) {
+    magnifiedIndex.value++;
+    magnifiedImage.value = magnifiedGallery.value[magnifiedIndex.value];
+  }
 };
 
-const prevImage = () => {
-  if (selectedImages.value.length === 0) return;
-  currentImageIndex.value = (currentImageIndex.value - 1 + selectedImages.value.length) % selectedImages.value.length;
+const prevMagnified = () => {
+  if (magnifiedGallery.value.length <= 1) return;
+  if (magnifiedIndex.value > 0) {
+    magnifiedIndex.value--;
+    magnifiedImage.value = magnifiedGallery.value[magnifiedIndex.value];
+  }
 };
 
 const handleKeyDown = (e) => {
-  if (selectedImages.value.length === 0) return;
+  if (!magnifiedImage.value) return;
   
-  if (e.key === 'ArrowRight') nextImage();
-  if (e.key === 'ArrowLeft') prevImage();
-  if (e.key === 'Escape') closeGallery();
+  if (e.key === 'Escape') closeMagnify();
+  if (e.key === 'ArrowRight') nextMagnified();
+  if (e.key === 'ArrowLeft') prevMagnified();
 };
 
 onMounted(() => {
@@ -117,80 +126,93 @@ const awards = [
       </button>
     </div>
 
-    <div class="header-section">
-      <h2>Awards & Recognitions</h2>
-      <p class="subtitle">Milestones and technical achievements.</p>
-    </div>
+    <div class="awards-container">
+      <div class="header-section">
+        <h2>Awards & Recognitions</h2>
+        <p class="subtitle">Milestones and technical achievements.</p>
+      </div>
 
-    <div class="activities-grid">
-      <div v-for="(award, index) in awards" :key="index" 
-           class="activity-card" 
-           :class="{ 'is-expanded': expandedIndex === index }"
-           @click="toggleExpand(index)"
-           :style="{ animationDelay: `${index * 0.15}s` }">
-        <div class="card-glass"></div>
-        <div class="icon-wrapper">
-          <div v-html="award.icon" class="activity-icon-container"></div>
-        </div>
-        <h3>{{ award.title }}</h3>
-        <p class="award-date">{{ award.date }}</p>
-        
-        <div class="expand-pane">
-          <div class="award-content">
-            <div class="award-points">
-              <div v-for="(point, pIdx) in award.points" :key="pIdx" class="award-point">
-                <span class="point-label">{{ point.label }}</span>
-                <span class="point-content">{{ point.content }}</span>
+      <div class="activities-grid">
+        <div v-for="(award, index) in awards" :key="index" 
+             class="activity-card" 
+             v-tilt
+             :class="{ 'is-expanded': expandedIndex === index }"
+             @click="toggleExpand(index)"
+             :style="{ animationDelay: `${index * 0.15}s` }">
+          <div class="card-glass"></div>
+          <div class="icon-wrapper">
+            <div v-html="award.icon" class="activity-icon-container"></div>
+          </div>
+          <h3>{{ award.title }}</h3>
+          <p class="award-date">{{ award.date }}</p>
+          
+          <div class="expand-pane">
+            <div class="award-content">
+              <div class="award-points">
+                <div v-for="(point, pIdx) in award.points" :key="pIdx" class="award-point">
+                  <span class="point-label">{{ point.label }}</span>
+                  <span class="point-content">{{ point.content }}</span>
+                </div>
+              </div>
+
+              <div class="award-inline-gallery">
+                <div class="gallery-scroll-container">
+                  <div v-for="(img, imgIdx) in award.images" :key="imgIdx" 
+                       class="gallery-item-wrapper"
+                       @click.stop="magnify(img, award.images)">
+                    <img :src="img" alt="Award Proof" class="inline-gallery-img" />
+                    <div class="item-glass-overlay"></div>
+                  </div>
+                </div>
+                <div v-if="award.images.length > 1" class="gallery-hint">
+                  <span class="scroll-arrow">⟷</span>
+                  <span>Swipe to view more</span>
+                </div>
               </div>
             </div>
-
-            <div class="gallery-preview">
-              <div v-for="(img, imgIdx) in award.images" :key="imgIdx" class="preview-dot" :class="{ active: imgIdx === 0 }"></div>
-              <span class="gallery-count">{{ award.images.length }} Photos</span>
-            </div>
-
-            <button class="view-award-btn" @click.stop="openGallery(award.images)">
-              View Full Gallery
-              <span class="btn-arrow">→</span>
-            </button>
           </div>
-        </div>
 
-        <div class="expand-indicator">
-          <span class="plus-minus">{{ expandedIndex === index ? '−' : '+' }}</span>
+          <div class="expand-indicator">
+            <span class="plus-minus">{{ expandedIndex === index ? '−' : '+' }}</span>
+          </div>
+          
+          <div class="card-glow" :style="{ background: award.color }"></div>
         </div>
-        
-        <div class="card-glow" :style="{ background: award.color }"></div>
       </div>
     </div>
 
-    <!-- Image Modal -->
-    <Transition name="fade">
-      <div v-if="selectedImages.length > 0" class="modal-overlay" @click="closeGallery">
-        <div class="modal-content" @click.stop>
-          <button v-if="selectedImages.length > 1" class="nav-btn prev" @click="prevImage">‹</button>
-          <img :src="selectedImages[currentImageIndex]" alt="Award Detailed View" />
-          <button v-if="selectedImages.length > 1" class="nav-btn next" @click="nextImage">›</button>
+    <!-- Glass Magnify Overlay -->
+    <Transition name="magnify">
+      <div v-if="magnifiedImage" class="magnify-overlay" @click="closeMagnify">
+        <div class="magnify-content" @click.stop>
+          <img :src="magnifiedImage" alt="Magnified View" class="magnified-img" />
           
-          <div class="modal-controls">
-            <span class="image-indicator">{{ currentImageIndex + 1 }} / {{ selectedImages.length }}</span>
-            <button class="close-btn" @click="closeGallery">×</button>
+          <div v-if="magnifiedGallery.length > 1" class="magnify-counter">
+            {{ magnifiedIndex + 1 }} / {{ magnifiedGallery.length }}
           </div>
+
+          <button class="magnify-close" @click="closeMagnify">×</button>
         </div>
       </div>
     </Transition>
-
   </div>
 </template>
 
 <style scoped>
 .view-content {
-  color: var(--color-text);
+  display: contents;
+}
+
+.awards-container {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
 }
 
 .header-section {
   margin-bottom: 3.5rem;
   animation: fadeSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  scroll-snap-align: start;
 }
 
 h2 {
@@ -212,8 +234,7 @@ h2 {
   grid-template-columns: 1fr;
   gap: 3.5rem;
   width: 100%;
-  max-width: 750px; /* Strategic width for 1-column achievements */
-  margin: 0 auto;
+  scroll-snap-align: start;
 }
 
 .activity-card {
@@ -474,24 +495,103 @@ h3 {
   color: var(--color-heading);
 }
 
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* Inline Gallery Styles */
+.award-inline-gallery {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.gallery-scroll-container {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 1rem 0.5rem 2rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.gallery-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+
+.gallery-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.gallery-item-wrapper {
+  position: relative;
+  flex: 0 0 280px;
+  height: 200px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.inline-gallery-img {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.98);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  z-index: 9999;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.item-glass-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4));
+  opacity: 0.6;
+}
+
+.gallery-item-wrapper:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-item-wrapper:hover .inline-gallery-img {
+  transform: scale(1.1);
+}
+
+.gallery-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  opacity: 0.3;
+  margin-top: -1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.scroll-arrow {
+  font-size: 1.2rem;
+}
+
+/* Glass Magnify Styles */
+.magnify-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  cursor: zoom-out;
 }
 
-.modal-content {
+.magnify-content {
   position: relative;
   width: 100%;
   height: 100%;
@@ -500,96 +600,74 @@ h3 {
   justify-content: center;
 }
 
-.modal-content img {
-  max-width: 92vw;
-  max-height: 88vh;
+.magnified-img {
+  max-width: 95vw;
+  max-height: 90vh;
   object-fit: contain;
-  border-radius: 20px;
-  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  animation: scaleIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 12px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+  animation: magnifyIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
 }
 
-.nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  width: 72px;
-  height: 72px;
+.magnify-close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  font-size: 2.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  z-index: 10;
-}
-
-.nav-btn:hover {
-  background: white;
-  color: black;
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.nav-btn.prev { left: 3rem; }
-.nav-btn.next { right: 3rem; }
-
-.modal-controls {
-  position: absolute;
-  bottom: 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.image-indicator {
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  opacity: 0.7;
-  letter-spacing: 0.1em;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.7rem 1.4rem;
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.close-btn {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  font-size: 2rem;
+  font-size: 1.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s ease;
-  font-weight: 200;
+  transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
 
-.close-btn:hover {
-  transform: rotate(90deg) scale(1.1);
-  background: #ff4757;
-  border-color: #ff4757;
+.magnify-close:hover {
+  background: white;
+  color: black;
+  transform: rotate(90deg);
+}
+
+.magnify-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.6rem 1.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
   color: white;
-  box-shadow: 0 0 30px rgba(255, 71, 87, 0.4);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  z-index: 10001;
+}
+
+@keyframes magnifyIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.magnify-enter-active, .magnify-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.magnify-enter-from, .magnify-leave-to {
+  opacity: 0;
 }
 
 @keyframes scaleIn {
-  from { transform: scale(0.9) translateY(20px); opacity: 0; }
-  to { transform: scale(1) translateY(0); opacity: 1; }
+  from { transform: scale(0.98); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 @keyframes fadeSlideUp {
@@ -614,7 +692,14 @@ h3 {
   .nav-btn.next { right: 1rem; }
 }
 
-.nav-header { margin-bottom: 2rem; }
+.nav-header { 
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  scroll-snap-align: start;
+}
 
 .back-btn-premium {
   position: relative;
@@ -633,6 +718,7 @@ h3 {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {

@@ -306,7 +306,11 @@ h3 {
 }
 
 .nav-header {
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .back-btn-premium {
@@ -326,6 +330,7 @@ h3 {
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
