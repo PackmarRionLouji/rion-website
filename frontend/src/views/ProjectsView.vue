@@ -127,11 +127,17 @@ const projects = [
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .back-btn-premium {
+    cursor: none;
+  }
 }
 
 .back-btn-premium .btn-content {
@@ -147,7 +153,7 @@ const projects = [
 
 .back-btn-premium:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(var(--color-heading-rgb), 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 

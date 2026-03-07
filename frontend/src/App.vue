@@ -3,6 +3,7 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
+    <ThreeBackground />
   </div>
   
   <div class="layout-wrapper">
@@ -36,9 +37,31 @@
 
 <script setup>
 import { RouterView } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import gsap from 'gsap';
 import Name from './components/Name.vue';
 import ColorPicker from './components/ColorPicker.vue';
 import CustomCursor from './components/CustomCursor.vue';
+import ThreeBackground from './components/ThreeBackground.vue';
+
+onMounted(() => {
+  // Liquid drift for background orbs
+  const orbs = document.querySelectorAll('.orb');
+  orbs.forEach((orb, i) => {
+    animateOrb(orb, i);
+  });
+});
+
+const animateOrb = (el, i) => {
+  gsap.to(el, {
+    x: `random(-10, 10)vw`,
+    y: `random(-10, 10)vh`,
+    scale: `random(0.9, 1.1)`,
+    duration: 15 + i * 5,
+    ease: 'sine.inOut',
+    onComplete: () => animateOrb(el, i)
+  });
+};
 </script>
 
 <style scoped>

@@ -510,6 +510,8 @@ h2 {
   cursor: pointer;
 }
 
+.nav-header { margin-bottom: 2rem; }
+
 .back-btn-premium {
   position: relative;
   display: inline-flex;
@@ -519,14 +521,42 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 100px;
   color: var(--color-heading);
+  text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.nav-header { margin-bottom: 2rem; }
+@media (hover: hover) and (pointer: fine) {
+  .back-btn-premium {
+    cursor: none;
+  }
+}
+
+.back-btn-premium .btn-content {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 2;
+}
+
+.back-btn-premium .arrow {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.back-btn-premium:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.back-btn-premium:hover .arrow {
+  transform: translateX(-4px);
+}
 
 .modal-enter-active, .modal-leave-active { transition: opacity 0.4s ease; }
 .modal-enter-from, .modal-leave-to { opacity: 0; }

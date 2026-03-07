@@ -328,6 +328,12 @@ h3 {
   -webkit-backdrop-filter: blur(12px);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .back-btn-premium {
+    cursor: none;
+  }
+}
+
 .back-btn-premium .btn-content {
   display: flex;
   align-items: center;
@@ -341,7 +347,7 @@ h3 {
 
 .back-btn-premium:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(var(--color-heading-rgb), 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 

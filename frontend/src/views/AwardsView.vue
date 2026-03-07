@@ -620,32 +620,46 @@ h3 {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.7rem 1.4rem;
+  padding: 0.6rem 1.2rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 100px;
   color: var(--color-heading);
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   overflow: hidden;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .back-btn-premium {
+    cursor: none;
+  }
 }
 
 .back-btn-premium .btn-content {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.6rem;
   z-index: 2;
+}
+
+.back-btn-premium .arrow {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .back-btn-premium:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.3);
-  transform: translateX(-5px);
+  transform: translateY(-2px);
+}
+
+.back-btn-premium:hover .arrow {
+  transform: translateX(-4px);
 }
 </style>
 

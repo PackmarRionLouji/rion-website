@@ -1,8 +1,7 @@
 <template>
   <div 
-    ref="cursor" 
+    ref="cursorMain" 
     class="custom-cursor"
-    :style="{ left: x + 'px', top: y + 'px' }"
   >
     <div class="cursor-dot"></div>
   </div>
@@ -10,39 +9,71 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import gsap from 'gsap'
 
-const cursor = ref(null)
-const x = ref(0)
-const y = ref(0)
+const cursorMain = ref(null)
+const mouse = { x: 0, y: 0 }
+const pos = { x: 0, y: 0 }
+const speed = 0.15
 
-const updateCursor = (e) => {
-  x.value = e.clientX
-  y.value = e.clientY
+const updateMouse = (e) => {
+  mouse.x = e.clientX
+  mouse.y = e.clientY
+  
+  // Magnetic check
+  const target = e.target.closest('a, button, .interactive')
+  if (target) {
+    const rect = target.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    
+    gsap.to(cursorMain.value, {
+      x: centerX,
+      y: centerY,
+      scale: 1.5,
+      duration: 0.3,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    })
+  } else {
+    gsap.to(cursorMain.value, {
+      x: mouse.x,
+      y: mouse.y,
+      scale: 1,
+      duration: 0.3,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    })
+  }
 }
 
 onMounted(() => {
-  document.addEventListener('mousemove', updateCursor)
+  window.addEventListener('mousemove', updateMouse)
+  
+  // Smooth follow for the pulse effect
+  gsap.set(cursorMain.value, { xPercent: -50, yPercent: -50 })
 })
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', updateCursor)
+  window.removeEventListener('mousemove', updateMouse)
 })
 </script>
 
 <style scoped>
 .custom-cursor {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 40px;
   height: 40px;
   background: radial-gradient(circle, rgba(243, 156, 18, 0.4) 0%, rgba(243, 156, 18, 0.1) 70%, transparent 100%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform;
 }
 
 @media (pointer: coarse) {
@@ -56,5 +87,6 @@ onUnmounted(() => {
   height: 8px;
   background: #f39c12;
   border-radius: 50%;
+  box-shadow: 0 0 10px #f39c12;
 }
 </style>
