@@ -8,6 +8,17 @@
       <div class="orb orb-3"></div>
       <ThreeBackground />
     </div>
+
+    <!-- Global Navigation Header -->
+    <div class="nav-header" v-if="showBackButton">
+      <button class="back-btn-premium" @click="$router.push('/')">
+        <span class="btn-content">
+          <span class="arrow">←</span>
+          <span>Back to Portfolio</span>
+        </span>
+        <div class="btn-glow"></div>
+      </button>
+    </div>
     
     <div class="layout-wrapper">
       <header class="left-panel">
@@ -34,8 +45,8 @@
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { RouterView, useRoute, useRouter } from 'vue-router';
+import { onMounted, ref, computed, watch } from 'vue';
 import gsap from 'gsap';
 import Name from './components/Name.vue';
 import ColorPicker from './components/ColorPicker.vue';
@@ -44,6 +55,13 @@ import ThreeBackground from './components/ThreeBackground.vue';
 import CinematicIntro from './components/CinematicIntro.vue';
 
 const isIntroComplete = ref(false);
+const route = useRoute();
+const router = useRouter();
+
+const showBackButton = computed(() => {
+  // Only show back button if not on home page
+  return route.path !== '/';
+});
 
 const handleIntroComplete = () => {
   isIntroComplete.value = true;
@@ -55,6 +73,17 @@ onMounted(() => {
   orbs.forEach((orb, i) => {
     animateOrb(orb, i);
   });
+});
+
+// Reset scroll on route change
+watch(() => route.path, () => {
+  const panel = document.querySelector('.right-panel');
+  if (panel) {
+    panel.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    });
+  }
 });
 
 const animateOrb = (el, i) => {
@@ -76,6 +105,56 @@ const animateOrb = (el, i) => {
 
 .layout-wrapper {
   display: contents;
+}
+
+/* Global Nav Header Styles */
+.nav-header { 
+  position: fixed;
+  top: 1.5rem;
+  left: 2.5rem; /* Slightly shifted for better clearance */
+  z-index: 10000; /* Extremely high z-index */
+  pointer-events: none;
+}
+
+.back-btn-premium {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: var(--color-heading);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+
+.back-btn-premium .btn-content {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 2;
+}
+
+.back-btn-premium .arrow {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.back-btn-premium:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.back-btn-premium:hover .arrow {
+  transform: translateX(-4px);
 }
 
 .left-panel {
@@ -232,6 +311,11 @@ const animateOrb = (el, i) => {
     padding: 6rem;
     height: 100vh;
     scroll-behavior: smooth;
+  }
+
+  .nav-header {
+    left: 4.5rem; /* Better alignment with sticky left panel padding */
+    top: 3.5rem;
   }
 }
 

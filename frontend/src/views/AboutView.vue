@@ -1,92 +1,85 @@
 <template>
-  <div class="view-content">
-    <div class="nav-header">
-      <button class="back-btn-premium" @click="$router.push('/')">
-        <span class="btn-content">
-          <span class="arrow">←</span>
-          <span>Back to Portfolio</span>
-        </span>
-        <div class="btn-glow"></div>
-      </button>
-    </div>
+  <div class="about-view">
 
-    <div class="about-container">
-      <!-- Section 1: The Hook -->
-      <section class="story-section hero-section animate-fade-in">
-        <div class="section-glass"></div>
-        <div class="content-wrapper">
-          <h2 class="hero-title spotlight-text">The <span class="highlight">Creative</span> Engineer</h2>
-          <p class="hero-subtitle spotlight-text">
-            Where the precision of <span class="text-logic">logic</span> meets the harmony of <span class="text-harmony">sound</span>.
-          </p>
-        </div>
-      </section>
-
-      <!-- Section 2: Professional Journey -->
-      <section class="story-section journey-section" v-observe-visibility>
-        <div class="story-grid">
-          <div class="story-text">
-            <span class="section-label">Technical Expertise</span>
-            <h3>Engineering for Impact</h3>
-            <p>
-              Professional experience spans the full technical stack, with a focus on building resilient systems at **Pando**. This includes architecting autonomous **email agents**, developing responsive **frontend** interfaces, and engineering scalable **backend** services.
-            </p>
-            <p>
-              Expertise extends to robust **database management** and implementing proactive **security architecture**, including SQL injection prevention and data sanitization for enterprise-grade reliability.
+    <div class="view-content">
+      <div class="about-container">
+        <!-- Section 1: The Hook -->
+        <section class="story-section hero-section animate-fade-in">
+          <div class="section-glass"></div>
+          <div class="content-wrapper">
+            <h2 class="hero-title spotlight-text">The <span class="highlight">Creative</span> Engineer</h2>
+            <p class="hero-subtitle spotlight-text">
+              Where the precision of <span class="text-logic">logic</span> meets the harmony of <span class="text-harmony">sound</span>.
             </p>
           </div>
-          <div class="story-visual">
-            <div class="visual-box tech-box">
-              <div class="code-snippet">
-                <code>const solution = architecture + security;</code>
+        </section>
+
+        <!-- Section 2: Professional Journey -->
+        <section class="story-section journey-section" v-observe-visibility>
+          <div class="story-grid">
+            <div class="story-text">
+              <span class="section-label">Technical Expertise</span>
+              <h3>Engineering for Impact</h3>
+              <p>
+                Professional experience spans the full technical stack, with a focus on building resilient systems at **Pando**. This includes architecting autonomous **email agents**, developing responsive **frontend** interfaces, and engineering scalable **backend** services.
+              </p>
+              <p>
+                Expertise extends to robust **database management** and implementing proactive **security architecture**, including SQL injection prevention and data sanitization for enterprise-grade reliability.
+              </p>
+            </div>
+            <div class="story-visual">
+              <div class="visual-box tech-box">
+                <div class="code-snippet">
+                  <code>const solution = architecture + security;</code>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Section 3: Creative Soul -->
-      <section class="story-section creative-section" v-observe-visibility>
-        <div class="story-grid reverse">
-          <div class="story-text">
-            <span class="section-label">Aesthetic Vision</span>
-            <h3>The Audio Connection</h3>
-            <p>
-              I believe code is like music—it needs to be clear, in sync, and free of "noise." As a **Certified Sound Engineering** professional and keyboardist, I bring an auditory perspective to technical problem-solving. Whether I'm mixing a track or refactoring a module, the goal is the same: <em>perfect harmony</em>.
-            </p>
-            <div class="hobby-tags">
-              <span class="hobby-tag">🔊 Sound Design</span>
-              <span class="hobby-tag">🎹 Keyboard</span>
-              <span class="hobby-tag">🎧 Mixing</span>
+        <!-- Section 3: Creative Soul -->
+        <section class="story-section creative-section" v-observe-visibility>
+          <div class="story-grid reverse">
+            <div class="story-text">
+              <span class="section-label">Aesthetic Vision</span>
+              <h3>The Audio Connection</h3>
+              <p>
+                I believe code is like music—it needs to be clear, in sync, and free of "noise." As a **Certified Sound Engineering** professional and keyboardist, I bring an auditory perspective to technical problem-solving. Whether I'm mixing a track or refactoring a module, the goal is the same: <em>perfect harmony</em>.
+              </p>
+              <div class="hobby-tags">
+                <span class="hobby-tag">🔊 Sound Design</span>
+                <span class="hobby-tag">🎹 Keyboard</span>
+                <span class="hobby-tag">🎧 Mixing</span>
+              </div>
             </div>
-          </div>
-          <div class="story-visual">
-            <div class="visual-box music-box">
-              <div class="wave-lines">
-                <span></span><span></span><span></span><span></span><span></span>
+            <div class="story-visual">
+              <div class="visual-box music-box">
+                <div class="wave-lines">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Section 4: The Path Ahead -->
-      <section class="story-section future-section" v-observe-visibility>
-        <div class="section-glass"></div>
-        <div class="content-wrapper center">
-          <span class="section-label">Future Goals</span>
-          <h3>Academic & Research Vision</h3>
-          <p class="future-text-refined">
-            Goal is to gain deep expertise in **Medical AI**, **Machine Learning**, and **Research Methodology**. With a strong foundation in Linear Algebra, PDEs, Signal Processing, and Robotics, my exploration of AI’s potential is rooted in both mathematics and real-world healthcare and financial domains.
-          </p>
-          <p class="future-text-refined goals-impact">
-            The mission is to contribute to human-centric healthcare innovations, where intelligent systems support clinical expertise and transform patient experiences through data-driven precision.
-          </p>
-          <div class="action-footer">
-            <button class="contact-trigger" @click="$router.push('/contact')">Let's Build Something Meaningful</button>
+        <!-- Section 4: The Path Ahead -->
+        <section class="story-section future-section" v-observe-visibility>
+          <div class="section-glass"></div>
+          <div class="content-wrapper center">
+            <span class="section-label">Future Goals</span>
+            <h3>Academic & Research Vision</h3>
+            <p class="future-text-refined">
+              Goal is to gain deep expertise in **Medical AI**, **Machine Learning**, and **Research Methodology**. With a strong foundation in Linear Algebra, PDEs, Signal Processing, and Robotics, my exploration of AI’s potential is rooted in both mathematics and real-world healthcare and financial domains.
+            </p>
+            <p class="future-text-refined goals-impact">
+              The mission is to contribute to human-centric healthcare innovations, where intelligent systems support clinical expertise and transform patient experiences through data-driven precision.
+            </p>
+            <div class="action-footer">
+              <button class="contact-trigger" @click="$router.push('/contact')">Let's Build Something Meaningful</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -342,61 +335,6 @@ p {
   box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
 }
 
-.nav-header { 
-  position: fixed;
-  top: 1.5rem;
-  left: 2rem;
-  z-index: 1000;
-  pointer-events: none;
-  scroll-snap-align: start;
-}
-
-.back-btn-premium {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 100px;
-  color: var(--color-heading);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  pointer-events: auto;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .back-btn-premium {
-    cursor: none;
-  }
-}
-
-.back-btn-premium .btn-content {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  z-index: 2;
-}
-
-.back-btn-premium .arrow {
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.back-btn-premium:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-}
-
-.back-btn-premium:hover .arrow {
-  transform: translateX(-4px);
-}
 
 @media (max-width: 968px) {
   .hero-title { font-size: 3.5rem; }
